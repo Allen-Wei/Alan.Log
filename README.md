@@ -66,7 +66,7 @@
 
 大致的使用, 上述的几个InjectLogModule已经演示了, 主要分类两种类型的日志模块, 一种是捕获某级别的日志, 另一种是捕获所有级别的日志.
 
-下面以 `[LogSingleFile](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/Implement/LogSingleFile.cs)` 实现为例介绍几个主要用法:
+下面以 `LogSingleFile` 实现为例介绍几个主要用法:
 
 	//方法1: 
 	LogUtils.Current.InjectLogModule<LogSingleFile>();
