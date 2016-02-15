@@ -29,6 +29,14 @@ namespace Alan.Log.Example
                 //这个需要 Alan.Log.RabbitMQ 模块
                 .InjectLogModule(new Alan.Log.RabbitMQ.LogRabbitMQ("host address", "user name", "password", "exchange name"));
 
+            LogUtils.Current.InjectLogModule<LogSingleFile>();
+            LogUtils.Current.InjectLogModule(new LogSingleFile());
+            LogUtils.Current.InjectLogModule(new LogSingleFile(@"E:\Temporary\log.txt"));
+            LogUtils.Current.InjectLogModuleAppendConfig<LogSingleFile>().Config(@"E:\Temporary\log.txt");
+
+            LogUtils.Current.InjectLogModule("error", new LogSingleFile());
+            LogUtils.Current.InjectLogModule("error", new LogSingleFile(@"E:\"));
+
 
             //写日志, 级别 error
             LogUtils.Current.Log(new Models.Log

@@ -42,7 +42,6 @@ namespace Alan.Log.Core
                 , { "debug", "debug"}
                 , { "trace", "trace"}
             };
-            this._lastLogModule = new Implement.LogEmpty();
         }
 
         /// <summary>
@@ -59,16 +58,6 @@ namespace Alan.Log.Core
         /// 不同级别的日志模块
         /// </summary>
         private Dictionary<string, List<ILog>> _logLevelModules;
-
-        /// <summary>
-        /// 当前最后一个日志模块
-        /// </summary>
-        private ILog _lastLogModule;
-
-        /// <summary>
-        /// 当前最后一个日志模块
-        /// </summary>
-        public ILog LastLogModule { get { return _lastLogModule; } }
 
 
         /// <summary>
@@ -140,7 +129,6 @@ namespace Alan.Log.Core
             if (log == null) throw new ArgumentNullException("log");
 
             this._logModules.Add(log);
-            this._lastLogModule = log;
 
             return this;
         }

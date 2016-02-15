@@ -223,27 +223,5 @@ namespace Alan.Log.Core
 
         }
 
-        /// <summary>
-        /// 将自己添加到日志模块列表
-        /// </summary>
-        /// <param name="self"></param>
-        public static ILog InjectThis(this ILog self)
-        {
-            LogUtils.Current.InjectLogModule(self);
-
-            return self;
-        }
-
-        /// <summary>
-        /// 只注入自己模块
-        /// </summary>
-        /// <param name="self"></param>
-        public static ILog InjectJustThis(this ILog self)
-        {
-            LogUtils.Current.ClearLogModules();
-            LogUtils.Current.InjectLogModule(self);
-
-            return self;
-        }
     }
 }
