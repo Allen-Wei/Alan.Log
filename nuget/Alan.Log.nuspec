@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Alan.Log</id>
+    <version>1.0.3</version>
+    <authors>Alan Wei</authors>
+    <owners>Alan Wei</owners>
+    <licenseUrl>https://github.com/Allen-Wei/Alan.Log</licenseUrl>
+    <projectUrl>https://github.com/Allen-Wei/Alan.Log</projectUrl>
+    <iconUrl>https://avatars0.githubusercontent.com/u/2927578</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Log module</description>
+    <releaseNotes>.net log module</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>.net log</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+	  <file src="..\Alan.Log\bin\Release\Alan.Log.dll" target="lib\net40\Alan.Log.dll" />
+	  <file src="..\Alan.Log\bin\Release\Alan.Log.XML" target="lib\net40\Alan.Log.XML" />
+	  <file src="..\Alan.Log\bin\Release\Alan.Log.pdb" target="lib\net40\Alan.Log.pdb" />
+  </files>
+</package>

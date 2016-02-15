@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Alan.Log.Core;
 using Alan.Log.Implement;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Net.Mail;
 
 namespace Alan.Log.Example
 {
@@ -16,49 +18,26 @@ namespace Alan.Log.Example
         {
             LogUtils.Current.InjectLogModule<LogTraceWrite>()
                 .InjectLogModule<LogSingleFile>()
+                .InjectLogModule(new LogEmail("bovert@163.com", "alan.overt", "alan.dev@qq.com", "smtp.163.com", 25, false))
                 .InjectLogModuleAppendConfig<LogSingleFile>().Config(@"E:\Temporary\SingleFile.txt");
-
             LogUtils.Current.InjectLogModuleAppendConfig<LogAutoSeperateFiles>().Config(10 * 1024, @"E:\Temporary", "MultiFile");
 
-            var factory = new ConnectionFactory()
+            //LogUtils.Current.InjectLogModule(new Alan.Log.RabbitMQ.LogRabbitMQ("106.39.123.229", "android", "android@2016", "demo.log"));
+
+
+            LogUtils.Current.Log(new Models.Log
             {
-                HostName = "219.143.6.72",
-                UserName = "android",
-                Password = "android@2016"
-            };
-            using (var connection = factory.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    var queue = channel.QueueDeclare(queue: "log-queue", durable: false, exclusive: false,
-                        autoDelete: false, arguments: null);
+                Id = Guid.NewGuid().ToString(),
+                Level = Models.Log.LogLevel.Debug,
+                Date = DateTime.Now,
+                Category = "order",
+                Message = "I'm message.",
+                Note = "I'm note",
+                Logger = "Alan Wei"
+            });
 
-                    channel.QueueBind(queue: queue.QueueName, exchange: "amq.rabbitmq.log", routingKey: "*");
-                    var consumer = new EventingBasicConsumer(channel);
-                    consumer.Received += (model, ea) =>
-                    {
-                        var body = ea.Body;
-                        var text = Encoding.UTF8.GetString(body);
+            Console.ReadKey();
 
-
-
-                        LogUtils.Current.Log(new Models.Log
-                        {
-                            Level = Models.Log.LogLevel.Info,
-                            Date = DateTime.Now.AddDays(50),
-                            Message = ea.RoutingKey,
-                            Note = text
-                        });
-
-
-
-                    };
-
-
-                    channel.BasicConsume(queue: queue.QueueName, noAck: false, consumer: consumer);
-                    Console.ReadKey();
-                }
-            }
 
         }
     }
