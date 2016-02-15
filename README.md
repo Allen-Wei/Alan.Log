@@ -6,7 +6,7 @@
 ## Alan.Log
 
 核心模块, 内置单文件日志(日志写进单个文件), 多文件日志(日志根据大小写进多个文件)和邮件日志(将日志发送到指定邮箱)实现.
-你可以注册多个日志模块, 所以这里你如果发布一个日志可能会有多个日志模块接收到日志.
+你可以注册多个日志模块, 所以这里你如果发布一个日志可能会有多个日志模块接收到日志. 提供 Fluent 风格的调用.
 
 ## Alan.Log.RabbitMQ
 
@@ -64,7 +64,7 @@
 	trace: 捕获
 
 
-大致的使用上述的几个InjectLogModule已经演示了, 主要分类两种类型的日志模块, 一种是捕获某级别的日志, 另一种是捕获所有级别的日志.
+大致的使用, 上述的几个InjectLogModule已经演示了, 主要分类两种类型的日志模块, 一种是捕获某级别的日志, 另一种是捕获所有级别的日志.
 
 下面以 `[LogSingleFile](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/Implement/LogSingleFile.cs)` 实现为例介绍几个主要用法:
 
@@ -89,3 +89,17 @@
 
 
 方法1, 2会把日志写到 `Path.Combine(Environment.CurrentDirectory, "LogSingleFile.txt")` 里. 方法3, 4会把日志写到 `E:\Temporary\log.txt` 里. 方法5, 6只捕获error级别日志, 并写到单个文件.
+
+
+## 扩展
+
+扩展很简单, 你需要实现 `Alan.Log.Core.ILog` 接口就可以了.
+你可以参考源码里的几个实现:
+	
+* [单文件日志](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/Implement/LogSingleFile.cs)
+* [自动分割多个文件日志](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/Implement/LogAutoSeperateFiles.cs)
+* [Trace.Write输出](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/Implement/LogTraceWrite.cs)
+* [发送邮件日志](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/Implement/LogEmail.cs)
+* [RabbitMQ实现](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log.RabbitMQ/LogRabbitMQ.cs)
+
+
