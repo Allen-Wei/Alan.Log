@@ -18,32 +18,45 @@ namespace Alan.Log.Implement
         /// <summary>
         /// Sender UserName
         /// </summary>
-        private string _userName;
+        public string UserName { get; set; }
         /// <summary>
         /// Sender Password
         /// </summary>
-        private string _passWord;
+        public string PassWord { get; set; }
         /// <summary>
         /// SMTP Server Address
         /// </summary>
-        private string _smtpServer;
+        public string SmtpHost { get; set; }
         /// <summary>
         /// SMTP Server Port
         /// </summary>
-        private int _smtpPort;
+        public int SmtpPort { get; set; }
 
         /// <summary>
         /// SMTP enabled SSL
         /// </summary>
-        private bool _enableSsl;
+        public bool EnableSsl { get; set; }
+
         /// <summary>
         /// Sender e-mail address
         /// </summary>
-        private string _sender;
+        public string Sender { get; set; }
+
         /// <summary>
         /// Receiver e-mail address
         /// </summary>
-        private string _receiver;
+        public string Receiver { get; set; }
+
+        /// <summary>
+        /// 发送者姓名
+        /// </summary>
+        public string SenderName { get; set; }
+
+        public LogEmail()
+        {
+            this.SmtpPort = 587;
+            this.EnableSsl = true;
+        }
 
         /// <summary>
         /// 创建实例
@@ -53,7 +66,7 @@ namespace Alan.Log.Implement
         /// <param name="smtpServer">SMTP Server Address</param>
         /// <param name="receiver">接收人邮箱地址</param>
         public LogEmail(string userName, string passWord, string receiver, string smtpServer)
-            : this(userName, passWord, smtpServer, receiver, 587, true, userName)
+            : this(userName, passWord, smtpServer, receiver, 587, true, userName, null)
         {
 
         }
@@ -67,7 +80,7 @@ namespace Alan.Log.Implement
         /// <param name="receiver">接收人邮箱地址</param>
         public LogEmail(string userName, string passWord,
             string receiver, string smtpServer, int port)
-            : this(userName, passWord, receiver, smtpServer, port, true, userName)
+            : this(userName, passWord, receiver, smtpServer, port, true, userName, null)
         {
         }
 
@@ -82,7 +95,7 @@ namespace Alan.Log.Implement
         /// <param name="receiver">接收人邮箱地址</param>
         public LogEmail(string userName, string passWord,
             string receiver, string smtpServer, int port, bool enableSsl)
-            : this(userName, passWord, receiver, smtpServer, port, enableSsl, userName)
+            : this(userName, passWord, receiver, smtpServer, port, enableSsl, userName, null)
         {
         }
 
@@ -96,16 +109,18 @@ namespace Alan.Log.Implement
         /// <param name="enableSsl">SMTP是否开启SSL</param>
         /// <param name="sender">发送人邮箱地址</param>
         /// <param name="receiver">接收人邮箱地址</param>
+        /// <param name="senderName">发送人姓名</param>
         public LogEmail(string userName, string passWord,
-            string receiver, string smtpServer, int port, bool enableSsl, string sender)
+            string receiver, string smtpServer, int port, bool enableSsl, string sender, string senderName)
         {
-            this._userName = userName;
-            this._passWord = passWord;
-            this._smtpServer = smtpServer;
-            this._smtpPort = port;
-            this._enableSsl = enableSsl;
-            this._sender = sender;
-            this._receiver = receiver;
+            this.UserName = userName;
+            this.PassWord = passWord;
+            this.SmtpHost = smtpServer;
+            this.SmtpPort = port;
+            this.EnableSsl = enableSsl;
+            this.Sender = sender;
+            this.Receiver = receiver;
+            this.SenderName = senderName;
         }
 
         /// <summary>
@@ -124,13 +139,17 @@ namespace Alan.Log.Implement
         public void Write(string id, DateTime date, string level, string logger, string category, string message, string note,
             string request, string response, string position)
         {
+            if (String.IsNullOrWhiteSpace(this.UserName)) throw new NullReferenceException("UserName can't be empty");
+            if (String.IsNullOrWhiteSpace(this.PassWord)) throw new NullReferenceException("PassWord can't be empty");
+            if (String.IsNullOrWhiteSpace(this.SmtpHost)) throw new NullReferenceException("Host can't be empty");
+            if (String.IsNullOrWhiteSpace(this.Sender)) this.Sender = this.UserName;
 
-            NetworkCredential credential = new NetworkCredential(this._userName, this._passWord);
+            NetworkCredential credential = new NetworkCredential(this.UserName, this.PassWord);
             SmtpClient smtp = new SmtpClient()
             {
-                EnableSsl = this._enableSsl,
-                Port = this._smtpPort,
-                Host = this._smtpServer,
+                EnableSsl = this.EnableSsl,
+                Port = this.SmtpPort,
+                Host = this.SmtpHost,
                 UseDefaultCredentials = true,
                 Credentials = credential
             };
@@ -150,7 +169,7 @@ namespace Alan.Log.Implement
             logs.Add(Environment.NewLine);
 
 
-            var mail = new MailMessage(new MailAddress(this._sender, "Log Sender"), new MailAddress(this._receiver));
+            var mail = new MailMessage(new MailAddress(this.Sender, this.SenderName ?? logger), new MailAddress(this.Receiver));
 
             mail.Subject = String.Format("Id: {0} Date: {1} Level: {2}", id, date.ToString("yyyy-MM-dd HH:mm:ss"), level);
             mail.SubjectEncoding = System.Text.Encoding.UTF8;

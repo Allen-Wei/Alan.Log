@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Alan.Log, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alan.Log.1.0.3\lib\net40\Alan.Log.dll</HintPath>
+    <Reference Include="Alan.Log, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alan.Log.1.0.4\lib\net40\Alan.Log.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Alan.Log.RabbitMQ, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">

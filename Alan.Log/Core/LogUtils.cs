@@ -71,10 +71,65 @@ namespace Alan.Log.Core
         public ILog LastLogModule { get { return _lastLogModule; } }
 
 
+        /// <summary>
+        /// 注入日志级别模块
+        /// </summary>
+        /// <param name="level">日志级别</param>
+        /// <param name="log">日志模块</param>
+        internal LogUtils AddLogModule(string level, ILog log)
+        {
+            if (String.IsNullOrWhiteSpace(level)) throw new ArgumentNullException("level");
+            if (log == null) throw new ArgumentNullException("log");
 
+            List<ILog> logModules;
+            if (this._logLevelModules.ContainsKey(level))
+            {
+                logModules = this._logLevelModules[level];
+                if (logModules == null)
+                {
+                    logModules = new List<ILog>();
+                    this._logLevelModules[level] = logModules;
+                }
+            }
+            else
+            {
+                logModules = new List<ILog>();
+                this._logLevelModules.Add(level, logModules);
+            }
 
+            logModules.Add(log);
 
+            return this;
+        }
 
+        /// <summary>
+        /// 注入日志级别模块
+        /// </summary>
+        /// <param name="level">日志级别</param>
+        internal TLog AddLogModule<TLog>(string level)
+            where TLog : ILog, new()
+        {
+            var log = new TLog();
+            this.AddLogModule(level, log);
+            return log;
+        }
+
+        /// <summary>
+        /// 迭代日志模块
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="iteral"></param>
+        /// <returns></returns>
+        internal LogUtils IteralLogModules(string level, Action<ILog> iteral)
+        {
+            if (!this._logLevelModules.ContainsKey(level))
+                return this;
+
+            var logModules = this._logLevelModules[level];
+            if (logModules == null) return this;
+            logModules.ForEach(iteral);
+            return this;
+        }
 
         /// <summary>
         /// 注入日志模块

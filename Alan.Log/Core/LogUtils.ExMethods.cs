@@ -10,18 +10,7 @@ namespace Alan.Log.Core
     /// Alan.Log.Core.LogUtils 扩展方法
     /// </summary>
     public static class LogUtilsExMethods
-    {   /// <summary>
-        /// 写日志
-        /// </summary>
-        /// <param name="utils">Alan.Log.Core.LogUtils</param>
-        /// <param name="log"></param>
-        public static LogUtils Log(this LogUtils utils, Models.Log log)
-        {
-            utils.IteralLogModules(l => l.Log(log));
-
-            return utils;
-        }
-
+    {
         /// <summary>
         /// 写日志
         /// </summary>
@@ -34,149 +23,112 @@ namespace Alan.Log.Core
         /// <param name="message">消息</param>
         /// <param name="note">备注</param>
         /// <param name="position">输出位置</param>
-        public static LogUtils Log(this LogUtils self, string id, DateTime date, string level, string logger, string category, string message, string note,
-            string position)
+        /// <param name="request">请求内容</param>
+        /// <param name="response">输出内容</param>
+        public static LogUtils Log(this LogUtils self,
+            string id = null,
+            DateTime date = default(DateTime),
+            string level = null,
+            string logger = null,
+            string category = null,
+            string message = null,
+            string note = null,
+            string position = null,
+            string request = null,
+            string response = null)
         {
-            self.IteralLogModules(log => log.Log(id: id, date: date, level: level, logger: logger, category: category, message: message, note: note, position: position));
+            //global log modules
+            self.IteralLogModules(log => log.Log(
+                id: id,
+                date: date,
+                level: level,
+                logger: logger,
+                category: category,
+                message: message,
+                note: note,
+                position: position,
+                request: request,
+                response: response));
+
+            //level log modules
+            if (!String.IsNullOrWhiteSpace(level))
+                self.IteralLogModules(level, log => log.Log(
+                    id: id,
+                    date: date,
+                    level: level,
+                    logger: logger,
+                    category: category,
+                    message: message,
+                    note: note,
+                    position: position,
+                    request: request,
+                    response: response));
 
             return self;
         }
+
 
         /// <summary>
         /// 写日志
         /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="id">编号</param>
-        /// <param name="date">日期</param>
-        /// <param name="level">级别</param>
-        /// <param name="message">消息</param>
-        /// <param name="position">输出位置</param>
-        public static LogUtils Log(this LogUtils self, string id, DateTime date, string level, string message, string position)
+        /// <param name="utils">Alan.Log.Core.LogUtils</param>
+        /// <param name="log"></param>
+        public static LogUtils Log(this LogUtils utils, Models.Log log)
         {
-            self.IteralLogModules(log => log.Log(id: id, date: date, level: level, message: message, position: position));
+            var level = (log.Level.ToString() ?? "").ToLower();
+
+            return utils.Log(
+                id: log.Id,
+                date: log.Date,
+                level: level,
+                logger: log.Logger,
+                category: log.Category,
+                message: log.Message,
+                note: log.Note,
+                position: log.Position,
+                request: log.Request,
+                response: log.Response);
+        }
+
+
+        #region utils methods
+
+        /// <summary>
+        /// 注入指定级别的日志模块
+        /// </summary>
+        /// <param name="self">LogUtils</param>
+        /// <param name="level">日志级别</param>
+        /// <param name="log">日志模块</param>
+        /// <returns></returns>
+        public static LogUtils InjectLogModule(this LogUtils self, string level, ILog log)
+        {
+            return self.AddLogModule(level, log);
+        }
+
+        /// <summary>
+        /// 注入指定级别的日志模块
+        /// </summary>
+        /// <param name="self">LogUtils</param>
+        /// <param name="level">日志级别</param>
+        /// <returns></returns>
+        public static LogUtils InjectLogModule<TLog>(this LogUtils self, string level)
+            where TLog : ILog, new()
+        {
+            self.AddLogModule<TLog>(level);
             return self;
         }
 
         /// <summary>
-        /// 写日志
+        /// 注入指定级别的日志模块
         /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="date">日期</param>
-        /// <param name="level">级别</param>
-        /// <param name="message">消息</param>
-        public static LogUtils Log(this LogUtils self, DateTime date, string level, string message)
+        /// <param name="self">LogUtils</param>
+        /// <param name="level">日志级别</param>
+        /// <returns></returns>
+        public static TLog InjectLogModuleAppendConfig<TLog>(this LogUtils self, string level)
+            where TLog : ILog, new()
         {
-            self.IteralLogModules(log => log.Log(date: date, level: level, message: message));
-
-            return self;
+            return self.AddLogModule<TLog>(level);
         }
-
-        /// <summary>
-        /// 写日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="level">级别</param>
-        /// <param name="message">消息</param>
-        public static LogUtils Log(this LogUtils self, string level, string message)
-        {
-            self.IteralLogModules(log => log.Log(date: DateTime.Now, level: level, message: message));
-
-            return self;
-        }
-
-        /// <summary>
-        /// 写日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="message">消息</param>
-        public static LogUtils Log(this LogUtils self, string message)
-        {
-            self.IteralLogModules(log => log.Log(message: message));
-
-            return self;
-        }
-
-
-        /// <summary>
-        /// 记录危险日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="message">消息</param>
-        /// <param name="note">备注</param>
-        public static LogUtils LogCritical(this LogUtils self, string message, string note)
-        {
-            self.IteralLogModules(log => log.LogCritical(message: message, note: note));
-
-            return self;
-        }
-
-        /// <summary>
-        /// 记录错误日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="message">消息</param>
-        /// <param name="note">备注</param>
-        public static LogUtils LogError(this LogUtils self, string message, string note)
-        {
-            self.IteralLogModules(log => log.LogError(message: message, note: note));
-
-            return self;
-        }
-
-
-        /// <summary>
-        /// 记录警告日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="message">消息</param>
-        /// <param name="note">备注</param>
-        public static LogUtils LogWarning(this LogUtils self, string message, string note)
-        {
-            self.IteralLogModules(log => log.LogWarning(message: message, note: note));
-
-            return self;
-        }
-
-
-        /// <summary>
-        /// 记录信息日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="message">消息</param>
-        /// <param name="note">备注</param>
-        public static LogUtils LogInfo(this LogUtils self, string message, string note)
-        {
-            self.IteralLogModules(log => log.LogInfo(message: message, note: note));
-
-            return self;
-        }
-
-
-        /// <summary>
-        /// 记录调试日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="message">消息</param>
-        /// <param name="note">备注</param>
-        public static LogUtils LogDebug(this LogUtils self, string message, string note)
-        {
-            self.IteralLogModules(log => log.LogDebug(message: message, note: note));
-
-            return self;
-        }
-
-        /// <summary>
-        /// 记录跟踪日志
-        /// </summary>
-        /// <param name="self">Alan.Log.Core.LogUtils</param>
-        /// <param name="message">消息</param>
-        /// <param name="note">备注</param>
-        public static LogUtils LogTrace(this LogUtils self, string message, string note)
-        {
-            self.IteralLogModules(log => log.LogTrace(message: message, note: note));
-            return self;
-        }
-
 
         /// <summary>
         /// 注入日志模块
@@ -223,28 +175,8 @@ namespace Alan.Log.Core
             return self.AddLogModule<TLog>();
         }
 
+        #endregion
 
 
-        ///// <summary>
-        ///// 设置日志级别
-        ///// </summary>
-        ///// <param name="self">Alan.Log.Core.LogUtils</param>
-        ///// <param name="ciritical">危险</param>
-        ///// <param name="error">错误/异常</param>
-        ///// <param name="warning">警告</param>
-        ///// <param name="info">信息</param>
-        ///// <param name="debug">调试</param>
-        ///// <param name="trace">捕获跟踪</param>
-        //public static LogUtils SetLogLevel(this LogUtils self, string ciritical, string error, string warning, string info, string debug, string trace)
-        //{
-        //    self._logLevles["cirtical"] = ciritical;
-        //    self._logLevles["error"] = error;
-        //    self._logLevles["warning"] = warning;
-        //    self._logLevles["info"] = info;
-        //    self._logLevles["debug"] = debug;
-        //    self._logLevles["trace"] = trace;
-
-        //    return self;
-        //}
     }
 }
