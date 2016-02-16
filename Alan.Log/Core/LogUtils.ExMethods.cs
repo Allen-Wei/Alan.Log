@@ -284,12 +284,12 @@ namespace Alan.Log.Core
         /// 注入指定级别的日志模块
         /// </summary>
         /// <param name="self">LogUtils</param>
-        /// <param name="level">日志级别</param>
+        /// <param name="levels">日志级别(同时订阅多个级别日志可以以空格分隔)</param>
         /// <returns></returns>
-        public static LogUtils InjectLogModule<TLog>(this LogUtils self, string level)
+        public static LogUtils InjectLogModule<TLog>(this LogUtils self, string levels)
             where TLog : ILog, new()
         {
-            self.AddLogModule<TLog>(level);
+            self.AddLogModule<TLog>(levels);
             return self;
         }
 
@@ -297,12 +297,12 @@ namespace Alan.Log.Core
         /// 注入指定级别的日志模块
         /// </summary>
         /// <param name="self">LogUtils</param>
-        /// <param name="level">日志级别</param>
+        /// <param name="levels">日志级别(同时订阅多个级别日志可以以空格分隔)</param>
         /// <returns></returns>
-        public static TLog InjectLogModuleAppendConfig<TLog>(this LogUtils self, string level)
+        public static TLog InjectLogModuleAppendConfig<TLog>(this LogUtils self, string levels)
             where TLog : ILog, new()
         {
-            return self.AddLogModule<TLog>(level);
+            return self.AddLogModule<TLog>(levels);
         }
 
         /// <summary>

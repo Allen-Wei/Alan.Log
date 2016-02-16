@@ -63,30 +63,34 @@ namespace Alan.Log.Core
         /// <summary>
         /// 注入日志级别模块
         /// </summary>
-        /// <param name="level">日志级别</param>
+        /// <param name="levels">日志级别(同时订阅多个级别日志可以以空格分隔)</param>
         /// <param name="log">日志模块</param>
-        internal LogUtils AddLogModule(string level, ILog log)
+        internal LogUtils AddLogModule(string levels, ILog log)
         {
-            if (String.IsNullOrWhiteSpace(level)) throw new ArgumentNullException("level");
+            if (String.IsNullOrWhiteSpace(levels)) throw new ArgumentNullException("levels");
             if (log == null) throw new ArgumentNullException("log");
 
-            List<ILog> logModules;
-            if (this._logLevelModules.ContainsKey(level))
+            levels.Split(' ').ToList().ForEach(level =>
             {
-                logModules = this._logLevelModules[level];
-                if (logModules == null)
+                List<ILog> logModules;
+                if (this._logLevelModules.ContainsKey(level))
+                {
+                    logModules = this._logLevelModules[level];
+                    if (logModules == null)
+                    {
+                        logModules = new List<ILog>();
+                        this._logLevelModules[level] = logModules;
+                    }
+                }
+                else
                 {
                     logModules = new List<ILog>();
-                    this._logLevelModules[level] = logModules;
+                    this._logLevelModules.Add(level, logModules);
                 }
-            }
-            else
-            {
-                logModules = new List<ILog>();
-                this._logLevelModules.Add(level, logModules);
-            }
 
-            logModules.Add(log);
+                logModules.Add(log);
+            });
+
 
             return this;
         }
@@ -94,12 +98,12 @@ namespace Alan.Log.Core
         /// <summary>
         /// 注入日志级别模块
         /// </summary>
-        /// <param name="level">日志级别</param>
-        internal TLog AddLogModule<TLog>(string level)
+        /// <param name="levels">日志级别(同时订阅多个级别日志可以以空格分隔)</param>
+        internal TLog AddLogModule<TLog>(string levels)
             where TLog : ILog, new()
         {
             var log = new TLog();
-            this.AddLogModule(level, log);
+            this.AddLogModule(levels, log);
             return log;
         }
 
