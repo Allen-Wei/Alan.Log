@@ -5,10 +5,11 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Alan.Log.Core;
-using Alan.Log.Implement;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Net.Mail;
+using Alan.Log.ILogImplement;
+using Alan.Log.LogContainerImplement;
 
 namespace Alan.Log.Example
 {

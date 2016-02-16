@@ -46,18 +46,19 @@
     <Compile Include="Core\ILog.cs" />
     <Compile Include="Core\ILog.ExMethods.cs" />
     <Compile Include="Core\ILogContainer.cs" />
-    <Compile Include="Core\LogContainer.ExMethods.cs" />
-    <Compile Include="Core\LogContainer.cs" />
-    <Compile Include="Core\LogUtils.cs" />
-    <Compile Include="Core\LogUtils.ExMethods.cs" />
-    <Compile Include="Implement\LogAutoSeperateFiles.cs" />
-    <Compile Include="Implement\LogEmail.cs" />
-    <Compile Include="Implement\LogEmpty.cs" />
-    <Compile Include="Implement\LogSingleFile.cs" />
-    <Compile Include="Implement\LogTraceWrite.cs" />
+    <Compile Include="Core\ILogContainer.ExMethods.cs" />
+    <Compile Include="LogContainerImplement\LogContainer.cs" />
+    <Compile Include="LogContainerImplement\LogUtils.cs" />
+    <Compile Include="LogContainerImplement\LogUtils.ExMethods.cs" />
+    <Compile Include="ILogImplement\LogAutoSeperateFiles.cs" />
+    <Compile Include="ILogImplement\LogEmail.cs" />
+    <Compile Include="ILogImplement\LogEmpty.cs" />
+    <Compile Include="ILogImplement\LogSingleFile.cs" />
+    <Compile Include="ILogImplement\LogTraceWrite.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
