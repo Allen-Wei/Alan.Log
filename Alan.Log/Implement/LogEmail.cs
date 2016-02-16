@@ -64,7 +64,7 @@ namespace Alan.Log.Implement
         /// <param name="userName">sender用户名</param>
         /// <param name="passWord">sender密码</param>
         /// <param name="smtpServer">SMTP Server Address</param>
-        /// <param name="receivers">接收人邮箱地址</param>
+        /// <param name="receivers">接收人邮箱地址(多个接收人用空格分隔)</param>
         public LogEmail(string userName, string passWord, string receivers, string smtpServer)
             : this(userName, passWord, smtpServer, receivers, 587, true, userName, null)
         {
@@ -77,7 +77,7 @@ namespace Alan.Log.Implement
         /// <param name="passWord">sender密码</param>
         /// <param name="smtpServer">SMTP Server Address</param>
         /// <param name="port">SMTP Port</param>
-        /// <param name="receivers">接收人邮箱地址</param>
+        /// <param name="receivers">接收人邮箱地址(多个接收人用空格分隔)</param>
         public LogEmail(string userName, string passWord,
             string receivers, string smtpServer, int port)
             : this(userName, passWord, receivers, smtpServer, port, true, userName, null)
@@ -92,7 +92,7 @@ namespace Alan.Log.Implement
         /// <param name="smtpServer">SMTP Server Address</param>
         /// <param name="port">SMTP Port</param>
         /// <param name="enableSsl">SMTP是否开启SSL</param>
-        /// <param name="receivers">接收人邮箱地址</param>
+        /// <param name="receivers">接收人邮箱地址(多个接收人用空格分隔)</param>
         public LogEmail(string userName, string passWord,
             string receivers, string smtpServer, int port, bool enableSsl)
             : this(userName, passWord, receivers, smtpServer, port, enableSsl, userName, null)
@@ -108,7 +108,7 @@ namespace Alan.Log.Implement
         /// <param name="port">SMTP Port</param>
         /// <param name="enableSsl">SMTP是否开启SSL</param>
         /// <param name="sender">发送人邮箱地址</param>
-        /// <param name="receivers">接收人邮箱地址</param>
+        /// <param name="receivers">接收人邮箱地址(多个接收人用空格分隔)</param>
         /// <param name="senderName">发送人姓名</param>
         public LogEmail(string userName, string passWord,
             string receivers, string smtpServer, int port, bool enableSsl, string sender, string senderName)
