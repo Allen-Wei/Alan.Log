@@ -12,6 +12,8 @@ namespace Alan.Log.Implement
     /// </summary>
     public class LogAutoSeperateFiles : ILog
     {
+        private static object _lock = new object();
+
         /// <summary>
         /// 文件最大尺寸
         /// </summary>
@@ -31,11 +33,10 @@ namespace Alan.Log.Implement
         /// (directory, fileNamePrefix, maxSize) 
         /// </summary>
         private Func<string, string, int, string> _getFileFullPath;
+
         public LogAutoSeperateFiles()
         {
-
-            this.Config(100*1024, Environment.CurrentDirectory, "LogAutoSeperateFiles");
-
+            this.Config(100 * 1024, Environment.CurrentDirectory, "LogAutoSeperateFiles");
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace Alan.Log.Implement
         /// <param name="fileMaxSizeBytes">单个文件最大尺寸</param>
         /// <param name="fileDirectoryPath">文件所在目录</param>
         /// <param name="fileNamePrefix">文件名前缀</param>
-        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix) 
+        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix)
         {
             this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix);
         }
@@ -156,15 +157,22 @@ namespace Alan.Log.Implement
 
             var fileFullPath = this._getFileFullPath(this._fileDirectory, this._fileNamePrefix, this._fileMaxSizeBytes);
 
-            if (!File.Exists(fileFullPath))
+            lock (_lock)
             {
-                using (var fs = File.Create(fileFullPath))
+                if (!File.Exists(fileFullPath))
                 {
-                    fs.Close();
+                    using (var fs = File.Create(fileFullPath))
+                    {
+                        var txt = Encoding.UTF8.GetBytes(String.Join(Environment.NewLine, logs));
+                        fs.Write(txt, 0, txt.Length);
+                        fs.Close();
+                    }
+                }
+                else
+                {
+                    File.AppendAllLines(fileFullPath, logs);
                 }
             }
-
-            File.AppendAllLines(fileFullPath, logs);
         }
     }
 }

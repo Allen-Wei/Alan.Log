@@ -10,6 +10,7 @@ namespace Alan.Log.Implement
 {
     public class LogSingleFile : ILog
     {
+        private static object _lock = new object();
         private string _filePath;
 
         public string LogFileFullPath
@@ -84,7 +85,10 @@ namespace Alan.Log.Implement
 
             logs.Add(Environment.NewLine);
 
-            File.AppendAllLines(this.LogFileFullPath, logs);
+            lock (_lock)
+            {
+                File.AppendAllLines(this.LogFileFullPath, logs);
+            }
         }
     }
 }
