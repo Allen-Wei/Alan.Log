@@ -80,7 +80,7 @@ namespace Alan.Log.Implement
         /// <param name="fileDirectoryPath">文件所在目录</param>
         /// <param name="fileNamePrefix">文件名前缀</param>
         /// <param name="getFileFullPath">(directory, fileNamePrefix, maxSize) => fileFullpath</param>
-        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, Func<string, string, int, string> getFileFullPath):this()
+        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, Func<string, string, int, string> getFileFullPath)
         {
             this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix, getFileFullPath);
         }
