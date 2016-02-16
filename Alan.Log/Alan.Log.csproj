@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="Core\ILog.cs" />
     <Compile Include="Core\ILog.ExMethods.cs" />
+    <Compile Include="Core\ILogContainer.cs" />
+    <Compile Include="Core\LogContainer.ExMethods.cs" />
+    <Compile Include="Core\LogContainer.cs" />
     <Compile Include="Core\LogUtils.cs" />
     <Compile Include="Core\LogUtils.ExMethods.cs" />
     <Compile Include="Implement\LogAutoSeperateFiles.cs" />

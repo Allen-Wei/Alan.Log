@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Alan.Log</id>
-    <version>1.0.12</version>
+    <version>1.1.1</version>
     <authors>Alan Wei</authors>
     <owners>Alan Wei</owners>
     <licenseUrl>https://github.com/Allen-Wei/Alan.Log</licenseUrl>
@@ -10,7 +10,10 @@
     <iconUrl>https://avatars0.githubusercontent.com/u/2927578</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Log module</description>
-    <releaseNotes>.net log module</releaseNotes>
+	<releaseNotes>
+		.net log module
+		1.0.13 ecapsulation Log.Utils.cs
+	</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>.net log</tags>
     <dependencies>
