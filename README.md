@@ -1,10 +1,6 @@
 
 # Alan.Log
 
-.Net 日志模块
-
-## Alan.Log
-
 核心模块, 内置单文件日志(日志写进单个文件), 多文件日志(日志根据大小写进多个文件)和邮件日志(将日志发送到指定邮箱)实现.
 你可以注册多个日志模块, 所以这里你如果发布一个日志可能会有多个日志模块接收到日志. 提供 Fluent 风格的调用.
 
@@ -29,7 +25,7 @@
                 //捕获所有级别日志, 发送到bovert@163.com邮箱
                 .InjectLogModule(new LogEmail("alan.dev@qq.com", "alan.dev@qq.com password", "bovert@163.com", "smtp.qq.com", 587, true))
                 //捕获error级别日志, 发送到alan.dev@qq.com邮箱
-                .InjectLogModule("error", new LogEmail("bovert@163.com", "alan.overt", "alan.dev@qq.com", "smtp.163.com", 25, false))
+                .InjectLogModule("error", new LogEmail("bovert@163.com", "alan-overt", "alan.dev@qq.com", "smtp.163.com", 25, false))
                 //捕获所有级别日志, 记录到文件, 如果文件大于100KB自动分割文件.
                 .InjectLogModule(new LogAutoSeperateFiles(fileMaxSizeBytes: 100 * 1024, fileDirectoryPath: @"E:\Temporary", fileNamePrefix: "multi-log-all"))
                 //捕获所有info级别日志, 记录到文件, 如果文件大于100KB自动分割文件.
