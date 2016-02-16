@@ -68,7 +68,7 @@ namespace Alan.Log.Implement
         /// <param name="fileMaxSizeBytes">单个文件最大尺寸</param>
         /// <param name="fileDirectoryPath">文件所在目录</param>
         /// <param name="fileNamePrefix">文件名前缀</param>
-        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix)
+        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix):this()
         {
             this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix);
         }
@@ -80,7 +80,7 @@ namespace Alan.Log.Implement
         /// <param name="fileDirectoryPath">文件所在目录</param>
         /// <param name="fileNamePrefix">文件名前缀</param>
         /// <param name="getFileFullPath">(directory, fileNamePrefix, maxSize) => fileFullpath</param>
-        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, Func<string, string, int, string> getFileFullPath)
+        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, Func<string, string, int, string> getFileFullPath):this()
         {
             this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix, getFileFullPath);
         }
