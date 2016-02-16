@@ -16,76 +16,47 @@ namespace Alan.Log.Example
     {
         static void Main(string[] args)
         {
-            ////捕获所有级别日志, 记录到单个日志文件里
-            //LogUtils.Current.InjectLogModule<LogSingleFile>()
-            //    //捕获所有级别日志, 发送到bovert@163.com邮箱
-            //    .InjectLogModule(new LogEmail("alan.dev@qq.com", "alan.dev@qq.com password", "bovert@163.com",
-            //        "smtp.qq.com", 587, true))
-            //    //捕获error级别日志, 发送到alan.dev@qq.com邮箱
-            //    .InjectLogModule("error",
-            //        new LogEmail("bovert@163.com", "alan.overt", "alan.dev@qq.com", "smtp.163.com", 25, false))
-            //    //捕获所有级别日志, 记录到文件, 如果文件大于100KB自动分割文件.
-            //    .InjectLogModule(new LogAutoSeperateFiles(fileMaxSizeBytes: 100*1024, fileDirectoryPath: @"E:\Temporary",
-            //        fileNamePrefix: "multi-log-all"))
-            //    //捕获所有info级别日志, 记录到文件, 如果文件大于100KB自动分割文件.
-            //    .InjectLogModule("info", new LogAutoSeperateFiles(100*1024, @"E:\Temporary", "multi-log-info"))
-            //    //这个需要 Alan.Log.RabbitMQ 模块
-            //    .InjectLogModule(new Alan.Log.RabbitMQ.LogRabbitMQ("host address", "user name", "password", "exchange name"));
+            //捕获所有级别日志, 记录到单个日志文件里
+            LogUtils.Current.InjectLogModule<LogSingleFile>()
+                //捕获所有级别日志, 发送到bovert@163.com邮箱
+                .InjectLogModule(new LogEmail("alan.dev@qq.com", "alan.dev@qq.com password", "bovert@163.com",
+                    "smtp.qq.com", 587, true))
+                //捕获error级别日志, 发送到alan.dev@qq.com邮箱
+                .InjectLogModule("error",
+                    new LogEmail("bovert@163.com", "alan.overt", "alan.dev@qq.com", "smtp.163.com", 25, false))
+                //捕获所有级别日志, 记录到文件, 如果文件大于100KB自动分割文件.
+                .InjectLogModule(new LogAutoSeperateFiles(fileMaxSizeBytes: 100 * 1024, fileDirectoryPath: @"E:\Temporary",
+                    fileNamePrefix: "multi-log-all"))
+                //捕获所有info级别日志, 记录到文件, 如果文件大于100KB自动分割文件.
+                .InjectLogModule("info", new LogAutoSeperateFiles(100 * 1024, @"E:\Temporary", "multi-log-info"))
+                //这个需要 Alan.Log.RabbitMQ 模块
+                .InjectLogModule(new Alan.Log.RabbitMQ.LogRabbitMQ("host address", "user name", "password", "exchange name"));
 
-            //LogUtils.Current.InjectLogModule<LogSingleFile>();
-            //LogUtils.Current.InjectLogModule(new LogSingleFile());
-            //LogUtils.Current.InjectLogModule(new LogSingleFile(@"E:\Temporary\log.txt"));
-            //LogUtils.Current.InjectLogModuleAppendConfig<LogSingleFile>().Config(@"E:\Temporary\log.txt");
+            LogUtils.Current.InjectLogModule<LogSingleFile>();
+            LogUtils.Current.InjectLogModule(new LogSingleFile());
+            LogUtils.Current.InjectLogModule(new LogSingleFile(@"E:\Temporary\log.txt"));
+            LogUtils.Current.InjectLogModuleAppendConfig<LogSingleFile>().Config(@"E:\Temporary\log.txt");
 
-            //LogUtils.Current.InjectLogModule("error", new LogSingleFile());
-            //LogUtils.Current.InjectLogModule("error", new LogSingleFile(@"E:\"));
-
-
-            ////写日志, 级别 error
-            //LogUtils.Current.Log(new Models.Log
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    Level = Models.Log.LogLevel.Error,
-            //    Date = DateTime.Now,
-            //    Category = "order",
-            //    Message = "order error",
-            //    Note = "I'm note",
-            //    Logger = "Alan Wei @ error"
-            //});
-
-            ////写日志, 级别 info
-            //LogUtils.Current.Log(id: Guid.NewGuid().ToString(), date: DateTime.Now, level: "info", logger: "Alan @ info", message: "info level log message");
+            LogUtils.Current.InjectLogModule("error", new LogSingleFile());
+            LogUtils.Current.InjectLogModule("error", new LogSingleFile(@"E:\"));
 
 
-
-
-
-
-            NetworkCredential credential = new NetworkCredential("bovert@163.com", "alan.overt");
-            SmtpClient smtp = new SmtpClient()
+            //写日志, 级别 error
+            LogUtils.Current.Log(new Models.Log
             {
-                EnableSsl = false,
-                Port = 25,
-                Host = "smtp.163.com",
-                UseDefaultCredentials = true,
-                Credentials = credential
-            };
+                Id = Guid.NewGuid().ToString(),
+                Level = Models.Log.LogLevel.Error,
+                Date = DateTime.Now,
+                Category = "order",
+                Message = "order error",
+                Note = "I'm note",
+                Logger = "Alan Wei @ error"
+            });
+
+            //写日志, 级别 info
+            LogUtils.Current.Log(id: Guid.NewGuid().ToString(), date: DateTime.Now, level: "info", logger: "Alan @ info", message: "info level log message");
 
 
-
-            var mail = new MailMessage();
-            mail.From = new MailAddress("bovert@163.com", "alan.overt");
-            mail.To.Add(new MailAddress("alan.dev@qq.com"));
-            mail.To.Add(new MailAddress("alan.dev@qq.com"));
-            mail.To.Add(new MailAddress("allen.way@qq.com"));
-
-            mail.Subject = "Subject: Hello world.";
-            mail.SubjectEncoding = System.Text.Encoding.UTF8;
-
-            mail.Body = "Body: It's body.";
-            mail.BodyEncoding = System.Text.Encoding.UTF8;
-
-            smtp.Send(mail);
 
 
             Console.ReadKey();
