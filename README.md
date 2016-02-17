@@ -107,7 +107,7 @@
 
 其他日志模块实现的使用方法类似, 就不一一列举, 你直接实例化对象时, 构造函数就会有参数提示.
 
-## 扩展
+## Custom Implement
 
 扩展很简单, 你需要实现 `Alan.Log.Core.ILog` 接口就可以了.
 你可以参考源码里的几个实现:
@@ -118,4 +118,8 @@
 * [发送邮件日志](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogEmail.cs)
 * [RabbitMQ实现](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log.RabbitMQ/LogRabbitMQ.cs)
 
+上述是日志模块的实现.
 
+你还需要有一个日志容器(ILogContainer)来容纳多个日志模块, 然后提供写日志的接口, 写日志的时候遍历注册的日志模块, 并调用日志模块的Write方法写日志. `Alan.Log` 里已经有了一个实现 `Alan.Log.LogContainerImplement.LogContainer.cs`, 然后利用单例模式, 实现了全局的一个唯一日志容器 `LogUtils.Current` .
+`LogContainer.cs` 和 `LogUtils.cs` 是我自己的实现, 你也可以实现接口 `ILogContainer.cs` 来根据自己的业务需求实现日志容器.
+这个日志模块耦合度还是很低的.
