@@ -54,7 +54,7 @@ namespace Alan.Log.ILogImplement
             if (String.IsNullOrWhiteSpace(fileFullPath)) throw new ArgumentNullException("fileFullPath");
 
             var directory = Path.GetDirectoryName(fileFullPath);
-            var prefixName = Path.GetFileName(fileFullPath);
+            var prefixName = Path.GetFileNameWithoutExtension(fileFullPath);
             var extName = (Path.GetExtension(fileFullPath) ?? "").Replace(".", "");
 
             this.Config(fileMaxSizeBytes, directory, prefixName, extName);
