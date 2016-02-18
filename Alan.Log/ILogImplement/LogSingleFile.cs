@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Alan.Log.Core;
 
 namespace Alan.Log.ILogImplement
@@ -85,7 +86,7 @@ namespace Alan.Log.ILogImplement
 
             lock (_lock)
             {
-                File.AppendAllLines(this.LogFileFullPath, logs);
+                File.AppendAllLines(this.LogFileFullPath, logs, Encoding.UTF8);
             }
         }
     }

@@ -195,7 +195,7 @@ namespace Alan.Log.ILogImplement
                 }
                 else
                 {
-                    File.AppendAllLines(fileFullPath, logs);
+                    File.AppendAllLines(fileFullPath, logs, Encoding.UTF8);
                 }
             }
         }
