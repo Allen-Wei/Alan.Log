@@ -29,6 +29,11 @@ namespace Alan.Log.ILogImplement
         private string _fileNamePrefix;
 
         /// <summary>
+        /// 日志文件后缀名
+        /// </summary>
+        private string _fileExtentionName;
+
+        /// <summary>
         /// 获取文件绝对路径
         /// (directory, fileNamePrefix, maxSize) 
         /// </summary>
@@ -36,8 +41,25 @@ namespace Alan.Log.ILogImplement
 
         public LogAutoSeperateFiles()
         {
-            this.Config(100 * 1024, Environment.CurrentDirectory, "LogAutoSeperateFiles");
+            this.Config(100 * 1024, Environment.CurrentDirectory, "LogAutoSeperateFiles", "txt");
         }
+
+        /// <summary>
+        /// 自动将日志记录到不同的文件里
+        /// </summary>
+        /// <param name="fileMaxSizeBytes">单个文件最大尺寸</param>
+        /// <param name="fileFullPath">日志文件绝对路径(比如 E:\SitePath\LogName.log, 目录是 E:\SitePath, 日志名前缀 LogName, 日志扩展名 log)</param>
+        public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileFullPath)
+        {
+            if (String.IsNullOrWhiteSpace(fileFullPath)) throw new ArgumentNullException("fileFullPath");
+
+            var directory = Path.GetDirectoryName(fileFullPath);
+            var prefixName = Path.GetFileName(fileFullPath);
+            var extName = (Path.GetExtension(fileFullPath) ?? "").Replace(".", "");
+
+            this.Config(fileMaxSizeBytes, directory, prefixName, extName);
+        }
+
 
         /// <summary>
         /// 自动将日志记录到不同的文件里
@@ -47,7 +69,7 @@ namespace Alan.Log.ILogImplement
         /// <param name="fileNamePrefix">文件名前缀</param>
         public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix)
         {
-            this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix);
+            this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix, "txt");
         }
 
         /// <summary>
@@ -59,7 +81,7 @@ namespace Alan.Log.ILogImplement
         /// <param name="getFileFullPath">(directory, fileNamePrefix, maxSize) => fileFullpath</param>
         public LogAutoSeperateFiles(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, Func<string, string, int, string> getFileFullPath)
         {
-            this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix, getFileFullPath);
+            this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix, "txt", getFileFullPath);
         }
 
 
@@ -69,8 +91,9 @@ namespace Alan.Log.ILogImplement
         /// <param name="fileMaxSizeBytes">单个文件最大尺寸</param>
         /// <param name="fileDirectoryPath">文件所在目录</param>
         /// <param name="fileNamePrefix">文件名前缀</param>
+        /// <param name="fileExtName">日志文件后缀名</param>
         /// <returns></returns>
-        public LogAutoSeperateFiles Config(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix)
+        public LogAutoSeperateFiles Config(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, string fileExtName)
         {
             if (fileMaxSizeBytes < 1) throw new ArgumentOutOfRangeException(message: "fileMaxSizeBytes 文件尺寸不能小于1", innerException: null);
             if (String.IsNullOrWhiteSpace(fileDirectoryPath)) throw new ArgumentNullException("fileDirectoryPath");
@@ -79,12 +102,13 @@ namespace Alan.Log.ILogImplement
             this._fileMaxSizeBytes = fileMaxSizeBytes;
             this._fileDirectory = fileDirectoryPath;
             this._fileNamePrefix = fileNamePrefix;
+            this._fileExtentionName = fileExtName;
 
 
             this._getFileFullPath = (direc, fnPrefix, maxSize) =>
             {
                 var directory = new DirectoryInfo(direc);
-                var files = directory.GetFiles(String.Format("{0}*.txt", fnPrefix)).OrderByDescending(f => f.CreationTime);
+                var files = directory.GetFiles(String.Format("{0}*.{1}", fnPrefix, this._fileExtentionName)).OrderByDescending(f => f.CreationTime);
 
                 var number = 0;
                 var firstFile = files.FirstOrDefault();
@@ -98,7 +122,7 @@ namespace Alan.Log.ILogImplement
                     ++number;
                 }
 
-                var fileFullPath = Path.Combine(direc, String.Format("{0}-{1}-{2}.txt", fnPrefix, DateTime.Now.ToString("yyyyMMdd"), number));
+                var fileFullPath = Path.Combine(direc, String.Format("{0}-{1}-{2}.{3}", fnPrefix, DateTime.Now.ToString("yyyyMMdd"), number, this._fileExtentionName));
 
 
                 return fileFullPath;
@@ -114,11 +138,12 @@ namespace Alan.Log.ILogImplement
         /// <param name="fileMaxSizeBytes">单个文件最大尺寸</param>
         /// <param name="fileDirectoryPath">文件所在目录</param>
         /// <param name="fileNamePrefix">文件名前缀</param>
+        /// <param name="extName">日志文件扩展名</param>
         /// <param name="getFileFullPath">(directory, fileNamePrefix, maxSize) => fileFullpath</param>
         /// <returns></returns>
-        public LogAutoSeperateFiles Config(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, Func<string, string, int, string> getFileFullPath)
+        public LogAutoSeperateFiles Config(int fileMaxSizeBytes, string fileDirectoryPath, string fileNamePrefix, string extName, Func<string, string, int, string> getFileFullPath)
         {
-            this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix);
+            this.Config(fileMaxSizeBytes, fileDirectoryPath, fileNamePrefix, extName);
 
             if (getFileFullPath == null) throw new ArgumentNullException("getFileFullPath");
 
