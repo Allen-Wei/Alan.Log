@@ -1,104 +1,125 @@
-
+ï»¿
 # Alan.Log
 
-ºËĞÄÄ£¿é, ÄÚÖÃµ¥ÎÄ¼şÈÕÖ¾(ÈÕÖ¾Ğ´½øµ¥¸öÎÄ¼ş), ¶àÎÄ¼şÈÕÖ¾(ÈÕÖ¾¸ù¾İ´óĞ¡Ğ´½ø¶à¸öÎÄ¼ş)ºÍÓÊ¼şÈÕÖ¾(½«ÈÕÖ¾·¢ËÍµ½Ö¸¶¨ÓÊÏä)ÊµÏÖ.
-Äã¿ÉÒÔ×¢²á¶à¸öÈÕÖ¾Ä£¿é, ËùÒÔÕâÀïÄãÈç¹û·¢²¼Ò»¸öÈÕÖ¾¿ÉÄÜ»áÓĞ¶à¸öÈÕÖ¾Ä£¿é½ÓÊÕµ½ÈÕÖ¾. Ìá¹© Fluent ·ç¸ñµÄµ÷ÓÃ.
+æ ¸å¿ƒæ¨¡å—, å†…ç½®å•æ–‡ä»¶æ—¥å¿—(æ—¥å¿—å†™è¿›å•ä¸ªæ–‡ä»¶), å¤šæ–‡ä»¶æ—¥å¿—(æ—¥å¿—æ ¹æ®å¤§å°å†™è¿›å¤šä¸ªæ–‡ä»¶)å’Œé‚®ä»¶æ—¥å¿—(å°†æ—¥å¿—å‘é€åˆ°æŒ‡å®šé‚®ç®±)å®ç°.
+ä½ å¯ä»¥æ³¨å†Œå¤šä¸ªæ—¥å¿—æ¨¡å—, æ‰€ä»¥è¿™é‡Œä½ å¦‚æœå‘å¸ƒä¸€ä¸ªæ—¥å¿—å¯èƒ½ä¼šæœ‰å¤šä¸ªæ—¥å¿—æ¨¡å—æ¥æ”¶åˆ°æ—¥å¿—. æä¾› Fluent é£æ ¼çš„è°ƒç”¨.
 
 ## Alan.Log.RabbitMQ
 
-Õâ¸öÊÇÀûÓÃRabbitMQÏûÏ¢¶ÓÁĞÊµÏÖµÄÈÕÖ¾Ä£¿é.
+è¿™ä¸ªæ˜¯åˆ©ç”¨RabbitMQæ¶ˆæ¯é˜Ÿåˆ—å®ç°çš„æ—¥å¿—æ¨¡å—.
 
 ## Install
 	
 	Install-Package Alan.Log
 
-Èç¹ûĞèÒªÊ¹ÓÃRabbitMQÀ´À©Õ¹ÈÕÖ¾ÏµÍ³, ¿ÉÒÔ Alan.Log.RabbitMQ Ä£¿é: 
+å¦‚æœéœ€è¦ä½¿ç”¨RabbitMQæ¥æ‰©å±•æ—¥å¿—ç³»ç»Ÿ, å¯ä»¥ Alan.Log.RabbitMQ æ¨¡å—: 
 
 	Install-Package Alan.Log.RabbitMQ
 
 ## Example
 
-ÏÂÃæÊÇÊ¹ÓÃÊ¾Àı, Ê¹ÓÃÆğÀ´ºÜ¼òµ¥: 
+ä¸‹é¢æ˜¯ä½¿ç”¨ç¤ºä¾‹, ä½¿ç”¨èµ·æ¥å¾ˆç®€å•: 
 			
-	 using Alan.Log.Core;
-	 using Alan.Log.LogContainerImplement;
+    using Alan.Log.Core;
+    using Alan.Log.ILogImplement;
+    using Alan.Log.LogContainerImplement;
 
-     //²¶»ñËùÓĞ¼¶±ğÈÕÖ¾, ¼ÇÂ¼µ½µ¥¸öÈÕÖ¾ÎÄ¼şÀï
-     LogUtils.Current.InjectLogModule<LogSingleFile>()
-         //²¶»ñËùÓĞ¼¶±ğÈÕÖ¾, ·¢ËÍµ½bovert@163.comÓÊÏä
-         .InjectLogModule(new LogEmail("alan.dev@qq.com", "alan.dev@qq.com password", "bovert@163.com", "smtp.qq.com", 587, true))
-         //²¶»ñerror¼¶±ğÈÕÖ¾, Í¬Ê±·¢ËÍµ½alan.dev@qq.comºÍalan.wei43@qq.comÁ½¸öÓÊÏä
-         .InjectLogModule("error", new LogEmail("bovert@163.com", "alan-overt", "alan.dev@qq.com alan.wei43@qq.com", "smtp.163.com", 25, false))
-         //²¶»ñËùÓĞ¼¶±ğÈÕÖ¾, ¼ÇÂ¼µ½ÎÄ¼ş, Èç¹ûÎÄ¼ş´óÓÚ100KB×Ô¶¯·Ö¸îÎÄ¼ş.
-         .InjectLogModule(new LogAutoSeperateFiles(fileMaxSizeBytes: 100 * 1024, fileDirectoryPath: @"E:\Temporary", fileNamePrefix: "multi-log-all"))
-         //²¶»ñËùÓĞinfo¼¶±ğÈÕÖ¾, ¼ÇÂ¼µ½ÎÄ¼ş, Èç¹ûÎÄ¼ş´óÓÚ100KB×Ô¶¯·Ö¸îÎÄ¼ş.
-         .InjectLogModule("info", new LogAutoSeperateFiles(100 * 1024, @"E:\Temporary", "multi-log-info"))
-         //Õâ¸öĞèÒª Alan.Log.RabbitMQ Ä£¿é
-         .InjectLogModule(new Alan.Log.RabbitMQ.LogRabbitMQ("host address", "user name", "password", "exchange name"));
-
-
-     //Ğ´ÈÕÖ¾, ¼¶±ğ error
-     LogUtils.Current.Log(new Models.Log
-     {
-         Id = Guid.NewGuid().ToString(),
-         Level = Models.Log.LogLevel.Error,
-         Date = DateTime.Now,
-         Category = "order",
-         Message = "order error",
-         Note = "I'm note",
-         Logger = "Alan Wei @ error"
-     });
-
-     //Ğ´ÈÕÖ¾, ¼¶±ğ info
-     LogUtils.Current.Log(id: Guid.NewGuid().ToString(), date: DateTime.Now, level: "info", logger: "Alan @ info", message: "info level log message");
+    //æ•è·æ‰€æœ‰çº§åˆ«æ—¥å¿—, è®°å½•åˆ°å•ä¸ªæ—¥å¿—æ–‡ä»¶é‡Œ
+    LogUtils.Current.InjectLogModule<LogSingleFile>()
+        //æ•è·æ‰€æœ‰çº§åˆ«æ—¥å¿—, å‘é€åˆ°bovert@163.comé‚®ç®±
+        .InjectLogModule(new LogEmail("alan.dev@qq.com", "alan.dev@qq.com password", "bovert@163.com", "smtp.qq.com", 587, true))
+        //æ•è·errorçº§åˆ«æ—¥å¿—, åŒæ—¶å‘é€åˆ°alan.dev@qq.comå’Œalan.wei43@qq.comä¸¤ä¸ªé‚®ç®±
+        .InjectLogModule("error", new LogEmail("bovert@163.com", "alan-overt", "alan.dev@qq.com alan.wei43@qq.com", "smtp.163.com", 25, false))
+        //æ•è·æ‰€æœ‰çº§åˆ«æ—¥å¿—, è®°å½•åˆ°æ–‡ä»¶, å¦‚æœæ–‡ä»¶å¤§äº100KBè‡ªåŠ¨åˆ†å‰²æ–‡ä»¶.
+        .InjectLogModule(new LogAutoSeperateFiles(fileMaxSizeBytes: 100 * 1024, fileDirectoryPath: @"E:\Temporary", fileNamePrefix: "multi-log-all"))
+        //æ•è·æ‰€æœ‰infoçº§åˆ«æ—¥å¿—, è®°å½•åˆ°æ–‡ä»¶, å¦‚æœæ–‡ä»¶å¤§äº100KBè‡ªåŠ¨åˆ†å‰²æ–‡ä»¶.
+        .InjectLogModule("info", new LogAutoSeperateFiles(100 * 1024, @"E:\Temporary", "multi-log-info"))
+        //è¿™ä¸ªéœ€è¦ Alan.Log.RabbitMQ æ¨¡å—
+        .InjectLogModule(new Alan.Log.RabbitMQ.LogRabbitMQ("host address", "user name", "password", "exchange name"));
 
 
-ÈÕÖ¾µÄ¼¶±ğÖ÷Òª·ÖÎªÒÔÏÂ¼¸ÖÖ: 
+    //å†™æ—¥å¿—, çº§åˆ« error
+    LogUtils.Current.Log(new Models.Log
+    {
+        Id = Guid.NewGuid().ToString(),
+        Level = Models.Log.LogLevel.Error,
+        Date = DateTime.Now,
+        Category = "order",
+        Message = "order error",
+        Note = "I'm note",
+        Logger = "Alan Wei @ error"
+    });
 
-	critical: Î£ÏÕ 
-	error: ´íÎó/Òì³£ 
-	warning: ¾¯¸æ 
-	info: ĞÅÏ¢ 
-	debug: µ÷ÊÔ 
-	trace: ²¶»ñ
+    //å†™æ—¥å¿—, çº§åˆ« info
+    LogUtils.Current.Log(id: Guid.NewGuid().ToString(), date: DateTime.Now, level: "info", logger: "Alan @ info", message: "info level log message");
 
 
-´óÖÂµÄÊ¹ÓÃ, ÉÏÊöµÄ¼¸¸öInjectLogModuleÒÑ¾­ÑİÊ¾ÁË, Ö÷Òª·ÖÀàÁ½ÖÖÀàĞÍµÄÈÕÖ¾Ä£¿é, Ò»ÖÖÊÇ²¶»ñÄ³¼¶±ğµÄÈÕÖ¾, ÁíÒ»ÖÖÊÇ²¶»ñËùÓĞ¼¶±ğµÄÈÕÖ¾.
+æ—¥å¿—çš„çº§åˆ«ä¸»è¦åˆ†ä¸ºä»¥ä¸‹å‡ ç§: 
 
-ÏÂÃæÒÔ `LogSingleFile` ÊµÏÖÎªÀı½éÉÜ¼¸¸öÖ÷ÒªÓÃ·¨:
+	critical: å±é™© 
+	error: é”™è¯¯/å¼‚å¸¸ 
+	warning: è­¦å‘Š 
+	info: ä¿¡æ¯ 
+	debug: è°ƒè¯• 
+	trace: æ•è·
 
-	//·½·¨1: 
+
+å¤§è‡´çš„ä½¿ç”¨, ä¸Šè¿°çš„å‡ ä¸ªInjectLogModuleå·²ç»æ¼”ç¤ºäº†, ä¸»è¦åˆ†ç±»ä¸¤ç§ç±»å‹çš„æ—¥å¿—æ¨¡å—, ä¸€ç§æ˜¯æ•è·æŸçº§åˆ«çš„æ—¥å¿—, å¦ä¸€ç§æ˜¯æ•è·æ‰€æœ‰çº§åˆ«çš„æ—¥å¿—.
+
+ä¸‹é¢ä»¥ `LogSingleFile` å•æ–‡ä»¶æ—¥å¿—çš„ç®€å•ä½¿ç”¨
+
+	//æ–¹æ³•1: 
 	LogUtils.Current.InjectLogModule<LogSingleFile>();
 
-	//·½·¨2
+	//æ–¹æ³•2
 	LogUtils.Current.InjectLogModule(new LogSingleFile());
 
-	//·½·¨3 
+	//æ–¹æ³•3 
 	LogUtils.Current.InjectLogModule(new LogSingleFile(@"E:\Temporary\log.txt"));
 
-	//·½·¨4
+	//æ–¹æ³•4
 	LogUtils.Current.InjectLogModuleAppendConfig<LogSingleFile>().Config(@"E:\Temporary\log.txt");
 
-	//·½·¨5
+	//æ–¹æ³•5
 	LogUtils.Current.InjectLogModule("error", new LogSingleFile());
 
-	//·½·¨6
-	LogUtils.Current.InjectLogModule("error", new LogSingleFile(@"E:\Temporary\.log.txt"));
+	//æ–¹æ³•6
+	LogUtils.Current.InjectLogModule("error info", new LogSingleFile(@"E:\Temporary\.log.txt"));
 	
 
 
-·½·¨1, 2»á°ÑÈÕÖ¾Ğ´µ½ `Path.Combine(Environment.CurrentDirectory, "LogSingleFile.txt")` Àï. ·½·¨3, 4»á°ÑÈÕÖ¾Ğ´µ½ `E:\Temporary\log.txt` Àï. ·½·¨5, 6Ö»²¶»ñerror¼¶±ğÈÕÖ¾, ²¢Ğ´µ½µ¥¸öÎÄ¼ş.
+æ–¹æ³•1, 2ä¼šæŠŠæ—¥å¿—å†™åˆ° `Path.Combine(Environment.CurrentDirectory, "LogSingleFile.txt")` é‡Œ. æ–¹æ³•3, 4ä¼šæŠŠæ—¥å¿—å†™åˆ° `E:\Temporary\log.txt` é‡Œ. æ–¹æ³•5åªæ•è·errorçº§åˆ«æ—¥å¿—, è€Œæ–¹æ³•6åˆ™ä¼šæ•è·errorå’Œinfoçº§åˆ«çš„æ—¥å¿—.
 
+ä¸‹é¢æ˜¯ `LogEmail` é‚®ä»¶æ—¥å¿—çš„ç®€å•ä½¿ç”¨:
 
-## À©Õ¹
+    //æ–¹æ³•1 
+    LogUtils.Current.InjectLogModule(new LogEmail("bovert@163.com", "password", "alan@qq.com alan@163.com", "smtp.163.com", 25, false));
+    //æ–¹æ³•2
+    LogUtils.Current.InjectLogModule(new LogEmail("bovert@163.com", "password", "alan@qq.com alan@163.com", "smtp.163.com", 25, false, "bovert@163.com", "sender name"));
+    //æ–¹æ³•3
+    LogUtils.Current.InjectLogModule("error", new LogEmail("bovert@163.com", "password", "alan@qq.com alan@163.com", "smtp.163.com", 25, false));
+    //æ–¹æ³•4
+    LogUtils.Current.InjectLogModule("error debug", new LogEmail("bovert@163.com", "password", "alan@qq.com alan@163.com", "smtp.163.com", 25, false));
 
-À©Õ¹ºÜ¼òµ¥, ÄãĞèÒªÊµÏÖ `Alan.Log.Core.ILog` ½Ó¿Ú¾Í¿ÉÒÔÁË.
-Äã¿ÉÒÔ²Î¿¼Ô´ÂëÀïµÄ¼¸¸öÊµÏÖ:
+é‚®ä»¶æ—¥å¿—æ¨¡å—ä½¿ç”¨çš„å¾®è½¯æä¾›çš„SmtpClientåº“, ç½‘æ˜“é‚®ç®± SSL: false, Port: 25 æµ‹è¯•é€šè¿‡, QQé‚®ç®± SSL: true, Port: 587 æµ‹è¯•é€šè¿‡. 
+
+å…¶ä¸­æ–¹æ³•1,2ä¼šæŠŠæ‰€æœ‰çº§åˆ«æ—¥å¿—ä½¿ç”¨é‚®ç®±bovert@163.comå‘é€åˆ°alan@qq.comå’Œalan@163.comä¸¤ä¸ªé‚®ç®±åœ°å€. æ–¹æ³•3,4ä¼šæ•è·æŒ‡å®šçº§åˆ«çš„æ—¥å¿—å‘é€åˆ°æŒ‡å®šé‚®ç®±ã€‚
+
+å…¶ä»–æ—¥å¿—æ¨¡å—å®ç°çš„ä½¿ç”¨æ–¹æ³•ç±»ä¼¼, å°±ä¸ä¸€ä¸€åˆ—ä¸¾, ä½ ç›´æ¥å®ä¾‹åŒ–å¯¹è±¡æ—¶, æ„é€ å‡½æ•°å°±ä¼šæœ‰å‚æ•°æç¤º.
+
+## Custom Implement
+
+æ‰©å±•å¾ˆç®€å•, ä½ éœ€è¦å®ç° `Alan.Log.Core.ILog` æ¥å£å°±å¯ä»¥äº†.
+ä½ å¯ä»¥å‚è€ƒæºç é‡Œçš„å‡ ä¸ªå®ç°:
 	
-* [µ¥ÎÄ¼şÈÕÖ¾](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogSingleFile.cs)
-* [×Ô¶¯·Ö¸î¶à¸öÎÄ¼şÈÕÖ¾](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogAutoSeperateFiles.cs)
-* [Trace.WriteÊä³ö](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogTraceWrite.cs)
-* [·¢ËÍÓÊ¼şÈÕÖ¾](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogEmail.cs)
-* [RabbitMQÊµÏÖ](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log.RabbitMQ/LogRabbitMQ.cs)
+* [å•æ–‡ä»¶æ—¥å¿—](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogSingleFile.cs)
+* [è‡ªåŠ¨åˆ†å‰²å¤šä¸ªæ–‡ä»¶æ—¥å¿—](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogAutoSeperateFiles.cs)
+* [Trace.Writeè¾“å‡º](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogTraceWrite.cs)
+* [å‘é€é‚®ä»¶æ—¥å¿—](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log/ILogImplement/LogEmail.cs)
+* [RabbitMQå®ç°](https://github.com/Allen-Wei/Alan.Log/blob/master/Alan.Log.RabbitMQ/LogRabbitMQ.cs)
 
+ä¸Šè¿°æ˜¯æ—¥å¿—æ¨¡å—çš„å®ç°.
 
+ä½ è¿˜éœ€è¦æœ‰ä¸€ä¸ªæ—¥å¿—å®¹å™¨(ILogContainer)æ¥å®¹çº³å¤šä¸ªæ—¥å¿—æ¨¡å—, ç„¶åæä¾›å†™æ—¥å¿—çš„æ¥å£, å†™æ—¥å¿—çš„æ—¶å€™éå†æ³¨å†Œçš„æ—¥å¿—æ¨¡å—, å¹¶è°ƒç”¨æ—¥å¿—æ¨¡å—çš„Writeæ–¹æ³•å†™æ—¥å¿—. `Alan.Log` é‡Œå·²ç»æœ‰äº†ä¸€ä¸ªå®ç° `Alan.Log.LogContainerImplement.LogContainer.cs`, ç„¶ååˆ©ç”¨å•ä¾‹æ¨¡å¼, å®ç°äº†å…¨å±€çš„ä¸€ä¸ªå”¯ä¸€æ—¥å¿—å®¹å™¨ `LogUtils.Current` .
+`LogContainer.cs` å’Œ `LogUtils.cs` æ˜¯æˆ‘è‡ªå·±çš„å®ç°, ä½ ä¹Ÿå¯ä»¥å®ç°æ¥å£ `ILogContainer.cs` æ¥æ ¹æ®è‡ªå·±çš„ä¸šåŠ¡éœ€æ±‚å®ç°æ—¥å¿—å®¹å™¨.
+è¿™ä¸ªæ—¥å¿—æ¨¡å—è€¦åˆåº¦è¿˜æ˜¯å¾ˆä½çš„.
