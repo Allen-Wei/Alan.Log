@@ -20,9 +20,9 @@ namespace Alan.Log.ILogImplement
                 if (String.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("LogFileFullPath");
                 if (!File.Exists(value))
                 {
-                    using (var fs = File.Create(value))
+                    lock (_lock)
                     {
-                        fs.Close();
+                        using (var fs = File.Create(value)) fs.Close();
                     }
                 }
 
