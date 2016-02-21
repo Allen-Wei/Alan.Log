@@ -1,0 +1,22 @@
+<!doctpe html>
+<html>
+	<head>
+		<title>Instant Logs</title>
+		<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body>
+		<ol id="logs">
+		</ol>
+		<script>
+			var socket = io.connect();
+			socket.on("logs", function(data){
+				console.log(data);
+				var logElement = document.createElement("li");
+				var textNode = document.createTextNode(data);
+				logElement.appendChild(textNode);
+				var logsElement = document.getElementById("logs");
+				logsElement.appendChild(logElement);
+			});
+		</script>
+	</body>
+</html>
