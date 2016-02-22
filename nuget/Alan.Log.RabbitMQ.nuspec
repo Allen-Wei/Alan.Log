@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Alan.Log.RabbitMQ</id>
-    <version>1.0.1.1</version>
+    <version>1.0.2.1</version>
     <authors>Alan Wei</authors>
     <owners>Alan Wei</owners>
     <licenseUrl>https://github.com/Allen-Wei/Alan.Log</licenseUrl>
@@ -10,13 +10,16 @@
     <iconUrl>https://avatars0.githubusercontent.com/u/2927578</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Log module for rabbitmq</description>
-    <releaseNotes>.net log module rabbitmq</releaseNotes>
+	<releaseNotes>
+		.net log module rabbitmq
+		remove queue name parameter
+	</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>.net log rabbitmq</tags>
     <dependencies>
 		<dependency id="Alan.Log" version="[1.0.2,]" />
-		<dependency id="Newtonsoft.Json" />
-		<dependency id="RabbitMQ.Client" />
+		<dependency id="Newtonsoft.Json" version="[4.0.2,]" />
+		<dependency id="RabbitMQ.Client" version="[3.6.0,]" />
     </dependencies>
   </metadata>
   <files>

@@ -35,10 +35,10 @@ namespace Alan.Log.RabbitMQ
         /// </summary>
         private string _rabbitMqVirtualHost;
 
-        /// <summary>
-        /// RabbitMQ 队列名称
-        /// </summary>
-        private string _queueName;
+        ///// <summary>
+        ///// RabbitMQ 队列名称
+        ///// </summary>
+        //private string _queueName;
 
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Alan.Log.RabbitMQ
         /// <param name="passWord">密码</param>
         /// <param name="exchange">交换器名</param>
         public LogRabbitMQ(string host, string userName, string passWord, string exchange)
-            : this(host, userName, passWord, exchange, "/", Guid.NewGuid().ToString())
+            : this(host, userName, passWord, exchange, "/")
         {
         }
 
@@ -62,20 +62,20 @@ namespace Alan.Log.RabbitMQ
         /// <param name="exchange">交换器名</param>
         /// <param name="queueName">队列名</param>
         /// <param name="vhost">虚拟主机名</param>
-        public LogRabbitMQ(string host, string userName, string passWord, string exchange, string vhost, string queueName)
+        public LogRabbitMQ(string host, string userName, string passWord, string exchange, string vhost)
         {
             this._rabbitMqHost = host;
             this._rabbitMqUserName = userName;
             this._rabbitMqPassword = passWord;
             this._rabbitMqExchange = exchange;
 
-            this._queueName = queueName;
+            //this._queueName = queueName;
             this._rabbitMqVirtualHost = vhost;
 
             var channel = Channel;
-            channel.QueueDeclare(queue: this._queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            //channel.QueueDeclare(queue: this._queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
             channel.ExchangeDeclare(exchange: this._rabbitMqExchange, type: "topic");
-            channel.QueueBind(queue: this._queueName, exchange: this._rabbitMqExchange, routingKey: "*");
+            //channel.QueueBind(queue: this._queueName, exchange: this._rabbitMqExchange, routingKey: "*");
         }
 
 
@@ -126,7 +126,7 @@ namespace Alan.Log.RabbitMQ
             string response,
             string position)
         {
-            if (!Regex.IsMatch(category, @"\w+")) category = "all";
+            if (String.IsNullOrWhiteSpace(category) || !Regex.IsMatch(category, @"(\w|\-)+")) category = "all";
             if (date == default(DateTime)) date = DateTime.Now;
 
 
