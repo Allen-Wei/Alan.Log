@@ -4,7 +4,7 @@ var app = require("express")(),
 	io = require("socket.io")(server),
 	amqp = require("amqplib/callback_api");
 
-server.listen(8080, "192.168.121.128");
+server.listen(8080, "localhost");
 
 app.get("/" , function(req, res){
 	res.sendfile(__dirname + "/index.html");
