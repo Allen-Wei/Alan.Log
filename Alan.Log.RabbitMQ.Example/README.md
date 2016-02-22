@@ -23,3 +23,5 @@ NodeJS项目里, 在 **app.js** 里 `amqp.connect("amqp://username:password@IpAddress
 
 ## End
 你可以通过routingKey来过滤不同级别的日志.
+
+![illustrator](https://raw.githubusercontent.com/Allen-Wei/Alan.Log/master/Alan.Log.RabbitMQ.Example/rabbitmq-log.png)
