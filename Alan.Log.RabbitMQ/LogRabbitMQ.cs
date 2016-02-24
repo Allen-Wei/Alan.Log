@@ -18,6 +18,12 @@ namespace Alan.Log.RabbitMQ
         /// </summary>
         private string _rabbitMqHost;
         /// <summary>
+        /// RabbitMQ Broker 端口号
+        /// </summary>
+        private int _rabbitMqPort;
+
+
+        /// <summary>
         /// RabbitMQ 用户名
         /// </summary>
         private string _rabbitMqUserName;
@@ -35,10 +41,18 @@ namespace Alan.Log.RabbitMQ
         /// </summary>
         private string _rabbitMqVirtualHost;
 
-        ///// <summary>
-        ///// RabbitMQ 队列名称
-        ///// </summary>
-        //private string _queueName;
+        /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <param name="host">RabbitMQ Broker 地址</param>
+        /// <param name="userName">用户名</param>
+        /// <param name="passWord">密码</param>
+        /// <param name="exchange">交换器名</param>
+        public LogRabbitMQ(string host, string userName, string passWord, string exchange)
+            : this(host, userName, passWord, exchange, "/", 5672)
+        {
+        }
+   
 
 
         /// <summary>
@@ -48,8 +62,9 @@ namespace Alan.Log.RabbitMQ
         /// <param name="userName">用户名</param>
         /// <param name="passWord">密码</param>
         /// <param name="exchange">交换器名</param>
-        public LogRabbitMQ(string host, string userName, string passWord, string exchange)
-            : this(host, userName, passWord, exchange, "/")
+        /// <param name="vhost">虚拟主机名</param>
+        public LogRabbitMQ(string host, string userName, string passWord, string exchange, string vhost) :
+            this(host, userName, passWord, exchange, vhost, 5672)
         {
         }
 
@@ -60,22 +75,20 @@ namespace Alan.Log.RabbitMQ
         /// <param name="userName">用户名</param>
         /// <param name="passWord">密码</param>
         /// <param name="exchange">交换器名</param>
-        /// <param name="queueName">队列名</param>
         /// <param name="vhost">虚拟主机名</param>
-        public LogRabbitMQ(string host, string userName, string passWord, string exchange, string vhost)
+        /// <param name="port">RabbitMQ Broker端口号</param>
+        public LogRabbitMQ(string host, string userName, string passWord, string exchange, string vhost, int port)
         {
             this._rabbitMqHost = host;
             this._rabbitMqUserName = userName;
             this._rabbitMqPassword = passWord;
             this._rabbitMqExchange = exchange;
 
-            //this._queueName = queueName;
             this._rabbitMqVirtualHost = vhost;
+            this._rabbitMqPort = port;
 
             var channel = Channel;
-            //channel.QueueDeclare(queue: this._queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
-            channel.ExchangeDeclare(exchange: this._rabbitMqExchange, type: "topic");
-            //channel.QueueBind(queue: this._queueName, exchange: this._rabbitMqExchange, routingKey: "*");
+            channel.ExchangeDeclare(exchange: this._rabbitMqExchange, type: "topic", durable: false, autoDelete: false, arguments: null);
         }
 
 

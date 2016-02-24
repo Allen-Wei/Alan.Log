@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Alan.Log.RabbitMQ</id>
-    <version>1.0.2.1</version>
+    <version>1.0.2.2</version>
     <authors>Alan Wei</authors>
     <owners>Alan Wei</owners>
     <licenseUrl>https://github.com/Allen-Wei/Alan.Log</licenseUrl>
