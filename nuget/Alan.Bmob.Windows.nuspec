@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Alan.Bmob.Windows</id>
-    <version>1.5.0</version>
+    <version>1.5.3</version>
     <authors>Bmob</authors>
     <owners>Bmob</owners>
     <licenseUrl>https://github.com/bmob/BmobSharp</licenseUrl>
@@ -16,6 +16,6 @@
 	<dependencies></dependencies>
   </metadata>
   <files>
-	  <file src="BmobSharp\Bmob-Windows.dll" target="lib\net45\Alan.Bmob.dll" />
+	  <file src="BmobSharp\Bmob-Windows.dll" target="lib\net40\Bmob-Windows.dll" />
   </files>
 </package>
