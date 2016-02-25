@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Alan.Bmob.Windows</id>
+    <version>1.5.0</version>
+    <authors>Bmob</authors>
+    <owners>Bmob</owners>
+    <licenseUrl>https://github.com/bmob/BmobSharp</licenseUrl>
+    <projectUrl>https://github.com/bmob/BmobSharp</projectUrl>
+    <iconUrl>https://avatars3.githubusercontent.com/u/7076762</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>bmob sharp</description>
+	<releaseNotes> </releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>bmob</tags>
+	<dependencies></dependencies>
+  </metadata>
+  <files>
+	  <file src="BmobSharp\Bmob-Windows.dll" target="lib\net45\Alan.Bmob.dll" />
+  </files>
+</package>

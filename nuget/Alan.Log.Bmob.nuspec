@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Alan.Log.Bmob</id>
+    <version>1.0.0.0</version>
+    <authors>Alan Wei</authors>
+    <owners>Alan Wei</owners>
+    <licenseUrl>https://github.com/Allen-Wei/Alan.Log</licenseUrl>
+    <projectUrl>https://github.com/Allen-Wei/Alan.Log</projectUrl>
+    <iconUrl>https://avatars0.githubusercontent.com/u/2927578</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Log module for rabbitmq</description>
+	<releaseNotes>
+		.net log module
+	</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>.net log bmob alan</tags>
+    <dependencies>
+		<dependency id="Alan.Log" version="[1.0.2,]" />
+		<dependency id="Install-Package Alan.Bmob.Windows" version="[1.5.0,]" />
+    </dependencies>
+  </metadata>
+  <files>
+	  <file src="..\Alan.Log.Bmob\bin\Release\Alan.Log.Bmob.dll" target="lib\net45\Alan.Log.Bmob.dll" />
+	  <file src="..\Alan.Log.Bmob\bin\Release\Alan.Log.Bmob.XML" target="lib\net45\Alan.Log.Bmob.XML" />
+	  <file src="..\Alan.Log.Bmob\bin\Release\Alan.Log.Bmob.pdb" target="lib\net45\Alan.Log.Bmob.pdb" />
+  </files>
+</package>
