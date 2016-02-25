@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alan.Log.Example", "Alan.Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alan.Log.RabbitMQ", "Alan.Log.RabbitMQ\Alan.Log.RabbitMQ.csproj", "{0D8DEBCA-0A63-489C-9D3A-32040ABA3940}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alan.Log.Bmob", "Alan.Log.Bmob\Alan.Log.Bmob.csproj", "{0C4E2457-93D4-49F4-B029-C43E08BBDAB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0D8DEBCA-0A63-489C-9D3A-32040ABA3940}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D8DEBCA-0A63-489C-9D3A-32040ABA3940}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D8DEBCA-0A63-489C-9D3A-32040ABA3940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4E2457-93D4-49F4-B029-C43E08BBDAB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4E2457-93D4-49F4-B029-C43E08BBDAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4E2457-93D4-49F4-B029-C43E08BBDAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4E2457-93D4-49F4-B029-C43E08BBDAB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
