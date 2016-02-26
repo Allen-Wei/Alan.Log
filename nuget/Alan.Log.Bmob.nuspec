@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Alan.Log.Bmob</id>
-    <version>1.0.0.0</version>
+    <version>1.0.1.0</version>
     <authors>Alan Wei</authors>
     <owners>Alan Wei</owners>
     <licenseUrl>https://github.com/Allen-Wei/Alan.Log</licenseUrl>
@@ -16,8 +16,8 @@
     <copyright>Copyright 2016</copyright>
     <tags>.net log bmob alan</tags>
     <dependencies>
-		<dependency id="Alan.Log" version="[1.0.2,]" />
-		<dependency id="Install-Package Alan.Bmob.Windows" version="[1.5.0,]" />
+		<dependency id="Alan.Log" version="[1.2.4,]" />
+		<dependency id="Alan.Bmob.Windows" version="[1.5.3,]" />
     </dependencies>
   </metadata>
   <files>

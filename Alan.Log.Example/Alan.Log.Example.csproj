@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bmob-Windows, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alan.Bmob.Windows.1.5.3\lib\net40\Bmob-Windows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -58,6 +62,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Alan.Log.Bmob\Alan.Log.Bmob.csproj">
+      <Project>{0c4e2457-93d4-49f4-b029-c43e08bbdab2}</Project>
+      <Name>Alan.Log.Bmob</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Alan.Log.RabbitMQ\Alan.Log.RabbitMQ.csproj">
       <Project>{0d8debca-0a63-489c-9d3a-32040aba3940}</Project>
       <Name>Alan.Log.RabbitMQ</Name>

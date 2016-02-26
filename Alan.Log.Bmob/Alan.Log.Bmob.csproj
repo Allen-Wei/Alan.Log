@@ -28,8 +28,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Alan.Log.Bmob.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Alan.Log, Version=1.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alan.Log.1.2.4\lib\net40\Alan.Log.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Bmob-Windows, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alan.Bmob.Windows.1.5.3\lib\net40\Bmob-Windows.dll</HintPath>
       <Private>True</Private>
@@ -45,7 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogBmob.cs" />
-    <Compile Include="LogModel.cs" />
+    <Compile Include="Utils\LogModel.cs" />
+    <Compile Include="Utils\LogQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
