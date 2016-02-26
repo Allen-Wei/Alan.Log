@@ -10,6 +10,11 @@ namespace Alan.Log.Bmob
     public class LogModel : BmobTable
     {
 
+        public string Id { get; set; }
+        public string Category { get; set; }
+        public BmobDate Date { get; set; }
+        public string Message { get; set; }
+        public string Note { get; set; }
 
         public override string table
         {
@@ -21,9 +26,11 @@ namespace Alan.Log.Bmob
         {
             base.readFields(input);
 
-            this.score = input.getInt("score");
-            this.cheatMode = input.getBoolean("cheatMode");
-            this.playerName = input.getString("playerName");
+            this.Id = input.getString(nameof(this.Id));
+            this.Category = input.getString(nameof(this.Category));
+            this.Date = input.getDate(nameof(this.Date));
+            this.Note = input.getString(nameof(this.Note));
+            this.Message = input.getString(nameof(this.Message));
         }
 
         //写字段信息
@@ -31,9 +38,11 @@ namespace Alan.Log.Bmob
         {
             base.write(output, all);
 
-            output.Put("score", this.score);
-            output.Put("cheatMode", this.cheatMode);
-            output.Put("playerName", this.playerName);
+            output.Put(nameof(this.Id), this.Id);
+            output.Put(nameof(this.Date), this.Date);
+            output.Put(nameof(this.Category), this.Category);
+            output.Put(nameof(this.Message), this.Message);
+            output.Put(nameof(this.Note), this.Note);
         }
     }
 }
