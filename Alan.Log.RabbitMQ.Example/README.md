@@ -22,6 +22,10 @@ NodeJS项目里, 在 **app.js** 里 `amqp.connect("amqp://username:password@IpAddress
 两个项目启动完成后, 你就可以打开VS项目启动后的网站了, 你访问VS网站 */Home/Index*, NodeJS网站就会立即打印出日志消息, 显示你访问了 */Home/Index*. 如果你访问 */Home/ThrowException?msg=exmsg*, NodeJS网站会立即打印出一个错误日志.
 
 ## End
+这里图解一下职责规划.
+截图里有两个虚拟机，第一个是RabbitMQ服务器(`192.168.121.129`)，第二个运行的是NodeJS站点(`192.168.121.128`)，NodeJS站点订阅RabbitMQ队列，接收日志消息，利用socket.io将日志消息实时显示在网页上。
+`http://localhost:60679`是一个ASP.Net网站，在Http Module是捕获了网站异常，并发布到日志，在`Begin_Request`里发布是每次请求日志。其中访问 `/Home/ThrowException` 会手动抛出一个异常消息。
+而访问`192.168.121.128:8080`就可以反问NodeJS搭建的网站，然后实时显示 `http:localhost:60679` 发布的日志消息。
 你可以通过routingKey来过滤不同级别的日志.
 
 ![illustrator](https://raw.githubusercontent.com/Allen-Wei/Alan.Log/master/Alan.Log.RabbitMQ.Example/rabbitmq-log.png)
