@@ -51,6 +51,7 @@ namespace Alan.Log.ILogImplement
                 if (!String.IsNullOrWhiteSpace(l.Response)) lines.Add("Response: " + l.Response);
                 if (!String.IsNullOrWhiteSpace(l.Position)) lines.Add("Position: " + l.Position);
                 lines.Add(String.Join("=", Enumerable.Repeat("=", 10)));
+                lines.Add(Environment.NewLine);
                 return String.Join(Environment.NewLine, lines);
             };
         }
