@@ -1,12 +1,17 @@
 ﻿
 # Alan.Log
 
-核心模块, 内置单文件日志(日志写进单个文件), 多文件日志(日志根据大小写进多个文件)和邮件日志(将日志发送到指定邮箱)实现.
-你可以注册多个日志模块, 所以这里你如果发布一个日志可能会有多个日志模块接收到日志. 提供 Fluent 风格的调用.
+核心模块(Alan.Log)内置了单文件日志(日志写进单个文件), 多文件日志(日志根据大小写进多个文件)和邮件日志(将日志发送到指定邮箱)三个实现.
+你可以注册多个日志模块, 如果你执行一次写日志操作可能会有多个日志模块接收到日志. Alan.Log 提供 Fluent 风格的调用.
+
 
 ## Alan.Log.RabbitMQ
 
 这个是利用RabbitMQ消息队列实现的日志模块.
+
+## Alan.Log.Bmob
+
+这个是 Bmob 网络数据库的日志模块.
 
 ## Install
 	
@@ -20,9 +25,12 @@
 
 下面是使用示例, 使用起来很简单: 
 			
+	//导入命名空间
     using Alan.Log.Core;
     using Alan.Log.ILogImplement;
     using Alan.Log.LogContainerImplement;
+
+	//配置日志模块
 
     //捕获所有级别日志, 记录到单个日志文件里
     LogUtils.Current.InjectLogModule<LogSingleFile>()
@@ -38,6 +46,7 @@
         .InjectLogModule(new Alan.Log.RabbitMQ.LogRabbitMQ("host address", "user name", "password", "exchange name"));
 
 
+	
     //写日志, 级别 error
     LogUtils.Current.Log(new Models.Log
     {
@@ -66,7 +75,7 @@
 
 大致的使用, 上述的几个InjectLogModule已经演示了, 主要分类两种类型的日志模块, 一种是捕获某级别的日志, 另一种是捕获所有级别的日志.
 
-下面以 `LogSingleFile` 单文件日志的简单使用
+下面是 `LogSingleFile` 单文件日志配置示例: 
 
 	//方法1: 
 	LogUtils.Current.InjectLogModule<LogSingleFile>();
@@ -90,7 +99,7 @@
 
 方法1, 2会把日志写到 `Path.Combine(Environment.CurrentDirectory, "LogSingleFile.txt")` 里. 方法3, 4会把日志写到 `E:\Temporary\log.txt` 里. 方法5只捕获error级别日志, 而方法6则会捕获error和info级别的日志.
 
-下面是 `LogEmail` 邮件日志的简单使用:
+下面是 `LogEmail` 邮件日志的配置示例:
 
     //方法1 
     LogUtils.Current.InjectLogModule(new LogEmail("bovert@163.com", "password", "alan@qq.com alan@163.com", "smtp.163.com", 25, false));
