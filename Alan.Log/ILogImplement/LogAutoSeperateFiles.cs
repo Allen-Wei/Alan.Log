@@ -8,7 +8,7 @@ using Alan.Log.Core;
 namespace Alan.Log.ILogImplement
 {
     /// <summary>
-    /// 自动将日志记录到不同的文件里
+    /// 根据文件大小自动将日志记录到不同的文件里
     /// </summary>
     public class LogAutoSeperateFiles : ILog
     {
@@ -39,6 +39,9 @@ namespace Alan.Log.ILogImplement
         /// </summary>
         private Func<string, string, int, string> _getFileFullPath;
 
+        /// <summary>
+        /// 实例化 默认大小 100*1024, 默认执行环境目录, 文件名LogAutoSeperateFiles
+        /// </summary>
         public LogAutoSeperateFiles()
         {
             this.Config(100 * 1024, Environment.CurrentDirectory, "LogAutoSeperateFiles", "txt");

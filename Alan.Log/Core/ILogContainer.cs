@@ -16,8 +16,8 @@ namespace Alan.Log.Core
         /// <param name="id">编号</param>
         /// <param name="date">日期</param>
         /// <param name="level">级别</param>
-        /// <param name="logger">标识者</param>
-        /// <param name="category">分类</param>
+        /// <param name="logger">标识者(比如system, admin)</param>
+        /// <param name="category">分类(比如order, pay, comment)</param>
         /// <param name="message">消息</param>
         /// <param name="note">备注</param>
         /// <param name="position">输出位置</param>

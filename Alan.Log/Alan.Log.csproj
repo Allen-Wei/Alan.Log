@@ -47,6 +47,7 @@
     <Compile Include="Core\ILog.ExMethods.cs" />
     <Compile Include="Core\ILogContainer.cs" />
     <Compile Include="Core\ILogContainer.ExMethods.cs" />
+    <Compile Include="ILogImplement\LogAutoSeperateFilesByDate.cs" />
     <Compile Include="LogContainerImplement\LogContainer.cs" />
     <Compile Include="LogContainerImplement\LogUtils.cs" />
     <Compile Include="LogContainerImplement\LogUtils.ExMethods.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="ILogImplement\LogSingleFile.cs" />
     <Compile Include="ILogImplement\LogTraceWrite.cs" />
     <Compile Include="Models\Log.cs" />
+    <Compile Include="Models\LogModelEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

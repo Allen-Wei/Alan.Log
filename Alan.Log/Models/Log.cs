@@ -73,5 +73,7 @@ namespace Alan.Log.Models
             Debug,
             Trace
         }
+
     }
+
 }
