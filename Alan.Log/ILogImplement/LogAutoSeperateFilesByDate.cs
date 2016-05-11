@@ -75,9 +75,7 @@ namespace Alan.Log.ILogImplement
                     if (!String.IsNullOrWhiteSpace(l.Position)) lines.Add(l.Position);
                 }
 
-
-                lines.Add(Environment.NewLine);
-                return String.Join(Environment.NewLine, lines);
+                return String.Join(Environment.NewLine, lines) + Environment.NewLine;
             };
         }
 
