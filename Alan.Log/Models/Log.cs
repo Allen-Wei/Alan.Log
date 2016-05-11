@@ -66,12 +66,34 @@ namespace Alan.Log.Models
         /// </summary>
         public enum LogLevel
         {
+            /// <summary>
+            /// 危险
+            /// </summary>
             Critical,
+            /// <summary>
+            /// 错误/异常
+            /// </summary>
             Error,
+            /// <summary>
+            /// 警告
+            /// </summary>
             Warning,
+            /// <summary>
+            /// 信息
+            /// </summary>
             Info,
+            /// <summary>
+            /// 调试
+            /// </summary>
             Debug,
-            Trace
+            /// <summary>
+            /// 捕获/跟踪
+            /// </summary>
+            Trace,
+            /// <summary>
+            /// 无
+            /// </summary>
+            None
         }
 
     }

@@ -38,6 +38,7 @@ namespace Alan.Log.ILogImplement
         /// (directory, fileNamePrefix, maxSize) 
         /// </summary>
         private Func<string, string, int, string> _getFileFullPath;
+        public bool AppendCommentName { get; set; }
 
         /// <summary>
         /// 实例化 默认大小 100*1024, 默认执行环境目录, 文件名LogAutoSeperateFiles
@@ -111,6 +112,8 @@ namespace Alan.Log.ILogImplement
             this._getFileFullPath = (direc, fnPrefix, maxSize) =>
             {
                 var directory = new DirectoryInfo(direc);
+                if (!directory.Exists) { directory.Create(); }
+
                 var files = directory.GetFiles(String.Format("{0}*.{1}", fnPrefix, this._fileExtentionName)).OrderByDescending(f => f.CreationTime);
 
                 var number = 0;
@@ -131,6 +134,7 @@ namespace Alan.Log.ILogImplement
                 return fileFullPath;
             };
 
+            this.AppendCommentName = true;
             return this;
         }
 
@@ -171,35 +175,46 @@ namespace Alan.Log.ILogImplement
         public void Write(string id, DateTime date, string level, string logger, string category, string message, string note,
             string request, string response, string position)
         {
-            var logs = new List<string>();
-            logs.Add(Environment.NewLine);
-            logs.Add(String.Format("{0} Id: {1}, Date: {2}, Level: {3} {0}", String.Join("", Enumerable.Repeat("=", 10)), id, date.ToString("yyyy-MM-dd HH:mm:ss"), level));
-            logs.Add(String.Format("Logger: {0} Category: {1}", logger, category));
 
-            if (!String.IsNullOrWhiteSpace(message)) logs.Add(String.Format("Message: {0}", message));
-            if (!String.IsNullOrWhiteSpace(note)) logs.Add(String.Format("Note: {0}", note));
-            if (!String.IsNullOrWhiteSpace(request)) logs.Add(String.Format("Request: {0}", request));
-            if (!String.IsNullOrWhiteSpace(response)) logs.Add(String.Format("Response: {0}", response));
-            if (!String.IsNullOrWhiteSpace(position)) logs.Add(String.Format("{0} Position: {1} {0}", String.Join("", Enumerable.Repeat("=", 10)), position));
-            logs.Add(Environment.NewLine);
+
+            var lines = new List<string>();
+
+            if (this.AppendCommentName)
+            {
+                if (!String.IsNullOrWhiteSpace(id)) lines.Add(String.Format("{0,10}: {1}", "Id", id));
+                if (date != default(DateTime)) lines.Add(String.Format("{0,10}: {1}", "Date", date.ToString("yyyy-MM-dd HH:mm:ss")));
+                if (!String.IsNullOrWhiteSpace(level)) lines.Add(String.Format("{0,10}: {1}", "Level", level));
+                if (!String.IsNullOrWhiteSpace(logger)) lines.Add(String.Format("{0,10}: {1}", "Logger", logger));
+                if (!String.IsNullOrWhiteSpace(category)) lines.Add(String.Format("{0,10}: {1}", "Category", category));
+                if (!String.IsNullOrWhiteSpace(message)) lines.Add(String.Format("{0,10}: {1}", "Message", message));
+                if (!String.IsNullOrWhiteSpace(note)) lines.Add(String.Format("{0,10}: {1}", "Note", note));
+                if (!String.IsNullOrWhiteSpace(request)) lines.Add(String.Format("{0,10}: {1}", "Request", request));
+                if (!String.IsNullOrWhiteSpace(response)) lines.Add(String.Format("{0,10}: {1}", "Response", response));
+                if (!String.IsNullOrWhiteSpace(position)) lines.Add(String.Format("{0,10}: {1}", "Position", position));
+            }
+            else
+            {
+                if (!String.IsNullOrWhiteSpace(id)) lines.Add(id);
+                if (date != default(DateTime)) lines.Add(date.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (!String.IsNullOrWhiteSpace(level)) lines.Add(level);
+                if (!String.IsNullOrWhiteSpace(logger)) lines.Add(logger);
+                if (!String.IsNullOrWhiteSpace(category)) lines.Add(category);
+                if (!String.IsNullOrWhiteSpace(message)) lines.Add(message);
+                if (!String.IsNullOrWhiteSpace(note)) lines.Add(note);
+                if (!String.IsNullOrWhiteSpace(request)) lines.Add(request);
+                if (!String.IsNullOrWhiteSpace(response)) lines.Add(response);
+                if (!String.IsNullOrWhiteSpace(position)) lines.Add(position);
+            }
+
+
+
+            var text = String.Join(Environment.NewLine, lines) + Environment.NewLine;
 
             var fileFullPath = this._getFileFullPath(this._fileDirectory, this._fileNamePrefix, this._fileMaxSizeBytes);
 
             lock (_lock)
             {
-                if (!File.Exists(fileFullPath))
-                {
-                    using (var fs = File.Create(fileFullPath))
-                    {
-                        var txt = Encoding.UTF8.GetBytes(String.Join(Environment.NewLine, logs));
-                        fs.Write(txt, 0, txt.Length);
-                        fs.Close();
-                    }
-                }
-                else
-                {
-                    File.AppendAllLines(fileFullPath, logs, Encoding.UTF8);
-                }
+                System.IO.File.AppendAllText(fileFullPath, text, System.Text.Encoding.UTF8);
             }
         }
     }

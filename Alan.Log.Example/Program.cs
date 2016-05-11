@@ -17,8 +17,10 @@ namespace Alan.Log.Example
         static void Main(string[] args)
         {
             SeperateFileLogByDate();
+            SingleFileLog();
             WriteLog();
         }
+
 
         static void WriteLog()
         {
@@ -57,8 +59,8 @@ namespace Alan.Log.Example
 
             LogUtils.Current.InjectLogModule<LogSingleFile>();
             LogUtils.Current.InjectLogModule(new LogSingleFile());
-            LogUtils.Current.InjectLogModule(new LogSingleFile(@"E:\Temporary\log.txt"));
-            LogUtils.Current.InjectLogModuleAppendConfig<LogSingleFile>().Config(@"E:\Temporary\log.txt");
+            LogUtils.Current.InjectLogModule(new LogSingleFile(@"D:\Temporary\logs\log.txt"));
+            LogUtils.Current.InjectLogModuleAppendConfig<LogSingleFile>().Config(@"D:\Temporary\logs\log.txt");
 
             LogUtils.Current.InjectLogModule("error", new LogSingleFile());
         }
@@ -74,7 +76,7 @@ namespace Alan.Log.Example
 
         static void SeperateFileLogByDate()
         {
-            LogUtils.Current.InjectLogModule(new LogAutoSeperateFilesByDate(@"E:\test.log"));
+            LogUtils.Current.InjectLogModule(new LogAutoSeperateFilesByDate(@"D:\Temporary\logs\date.log"));
         }
 
     }

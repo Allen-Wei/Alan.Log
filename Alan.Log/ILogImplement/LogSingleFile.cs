@@ -7,50 +7,56 @@ using Alan.Log.Core;
 
 namespace Alan.Log.ILogImplement
 {
+    /// <summary>
+    /// 单文件日志
+    /// </summary>
     public class LogSingleFile : ILog
     {
         private static object _lock = new object();
-        private string _filePath;
 
-        public string LogFileFullPath
-        {
-            get { return this._filePath; }
-            set
-            {
-                if (String.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("LogFileFullPath");
-                if (!File.Exists(value))
-                {
-                    lock (_lock)
-                    {
-                        using (var fs = File.Create(value)) fs.Close();
-                    }
-                }
 
-                this._filePath = value;
-            }
-        }
+        /// <summary>
+        /// 是否在写日志的时候添加注释
+        /// </summary>
+        public bool AppendCommentName { get; set; }
 
+        /// <summary>
+        /// 日志文件路径
+        /// </summary>
+        public string LogFileFullPath { get; set; }
+
+        /// <summary>
+        /// 实例化日志模块
+        /// </summary>
         public LogSingleFile()
         {
-            this.LogFileFullPath = Path.Combine(Environment.CurrentDirectory, "LogSingleFile.txt");
-        }
-
-        public LogSingleFile(string logFileFullPath)
-        {
-            this.Config(logFileFullPath);
+            this.LogFileFullPath = Path.Combine(Environment.CurrentDirectory, "LogSingleFileClear.txt");
+            this.AppendCommentName = true;
         }
 
         /// <summary>
-        /// 配置
+        /// 实例化日志模块
         /// </summary>
-        /// <param name="logFileFullPath">日志文件路径</param>
-        /// <returns></returns>
-        public LogSingleFile Config(string logFileFullPath)
+        /// <param name="logFileFullPath">日志绝对路径</param>
+        public LogSingleFile(string logFileFullPath)
         {
-
-            if (String.IsNullOrWhiteSpace(logFileFullPath)) throw new ArgumentNullException("logFileFullPath");
-
             this.LogFileFullPath = logFileFullPath;
+        }
+
+
+        /// <summary>
+        /// 实例化日志模块
+        /// </summary>
+        /// <param name="logFileFullPath">日志绝对路径</param>
+        /// <param name="appenComment">是否添加注释前缀</param>
+        public LogSingleFile(string logFileFullPath, bool appenComment)
+        {
+            this.LogFileFullPath = logFileFullPath;
+            this.AppendCommentName = appenComment;
+        }
+        public LogSingleFile Config(string fullPath)
+        {
+            this.LogFileFullPath = fullPath;
             return this;
         }
 
@@ -70,23 +76,44 @@ namespace Alan.Log.ILogImplement
         public void Write(string id, DateTime date, string level, string logger, string category, string message, string note,
             string request, string response, string position)
         {
-            var logs = new List<string>();
-            logs.Add(Environment.NewLine);
-            logs.Add(String.Format("{0} Id: {1}, Date: {2}, Level: {3} {0}",
-                String.Join("", Enumerable.Repeat("=", 10)), id, date.ToString("yyyy-MM-dd HH:mm:ss"), level));
-            logs.Add(String.Format("Logger: {0} Category: {1}", logger, category));
+            var lines = new List<string>();
 
-            if (!String.IsNullOrWhiteSpace(message)) logs.Add(String.Format("Message: {0}", message));
-            if (!String.IsNullOrWhiteSpace(note)) logs.Add(String.Format("Note: {0}", note));
-            if (!String.IsNullOrWhiteSpace(request)) logs.Add(String.Format("Request: {0}", request));
-            if (!String.IsNullOrWhiteSpace(response)) logs.Add(String.Format("Response: {0}", response));
-            if (!String.IsNullOrWhiteSpace(position)) logs.Add(String.Format("{0} Position: {1} {0}", String.Join("", Enumerable.Repeat("=", 10)), position));
+            if (this.AppendCommentName)
+            {
+                if (!String.IsNullOrWhiteSpace(id)) lines.Add(String.Format("{0,-10}: {1}", "Id", id));
+                if (date != default(DateTime)) lines.Add(String.Format("{0,-10}: {1}", "Date", date.ToString("yyyy-MM-dd HH:mm:ss")));
+                if (!String.IsNullOrWhiteSpace(level)) lines.Add(String.Format("{0,-10}: {1}", "Level", level));
+                if (!String.IsNullOrWhiteSpace(logger)) lines.Add(String.Format("{0,-10}: {1}", "Logger", logger));
+                if (!String.IsNullOrWhiteSpace(category)) lines.Add(String.Format("{0,-10}: {1}", "Category", category));
+                if (!String.IsNullOrWhiteSpace(message)) lines.Add(String.Format("{0,-10}: {1}", "Message", message));
+                if (!String.IsNullOrWhiteSpace(note)) lines.Add(String.Format("{0,-10}: {1}", "Note", note));
+                if (!String.IsNullOrWhiteSpace(request)) lines.Add(String.Format("{0,-10}: {1}", "Request", request));
+                if (!String.IsNullOrWhiteSpace(response)) lines.Add(String.Format("{0,-10}: {1}", "Response", response));
+                if (!String.IsNullOrWhiteSpace(position)) lines.Add(String.Format("{0,-10}: {1}", "Position", position));
+            }
+            else
+            {
+                if (!String.IsNullOrWhiteSpace(id)) lines.Add(id);
+                if (date != default(DateTime)) lines.Add(date.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (!String.IsNullOrWhiteSpace(level)) lines.Add(level);
+                if (!String.IsNullOrWhiteSpace(logger)) lines.Add(logger);
+                if (!String.IsNullOrWhiteSpace(category)) lines.Add(category);
+                if (!String.IsNullOrWhiteSpace(message)) lines.Add(message);
+                if (!String.IsNullOrWhiteSpace(note)) lines.Add(note);
+                if (!String.IsNullOrWhiteSpace(request)) lines.Add(request);
+                if (!String.IsNullOrWhiteSpace(response)) lines.Add(response);
+                if (!String.IsNullOrWhiteSpace(position)) lines.Add(position);
+            }
 
-            logs.Add(Environment.NewLine);
+            var text = String.Join(Environment.NewLine, lines) + Environment.NewLine;
+
+            var dir = System.IO.Path.GetDirectoryName(this.LogFileFullPath);
 
             lock (_lock)
             {
-                File.AppendAllLines(this.LogFileFullPath, logs, Encoding.UTF8);
+                if (!System.IO.Directory.Exists(dir)) System.IO.Directory.CreateDirectory(dir);
+
+                System.IO.File.AppendAllText(this.LogFileFullPath, text, System.Text.Encoding.UTF8);
             }
         }
     }

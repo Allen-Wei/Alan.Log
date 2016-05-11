@@ -224,7 +224,7 @@ namespace Alan.Log.LogContainerImplement
             if (this._logLevles.ContainsKey(level))
                 return this._logLevles[level];
 
-            return String.Empty;
+            return level;
         }
 
     }

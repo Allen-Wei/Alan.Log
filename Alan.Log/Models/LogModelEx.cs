@@ -18,7 +18,7 @@ namespace Alan.Log.Models.Ex
         /// <returns></returns>
         public static Log.LogLevel ToLogLevel(this string level)
         {
-            if (String.IsNullOrWhiteSpace(level)) return Log.LogLevel.Trace;
+            if (String.IsNullOrWhiteSpace(level)) return Log.LogLevel.None;
 
             level = level.ToLower();
             switch (level)
@@ -29,7 +29,7 @@ namespace Alan.Log.Models.Ex
                 case "info": return Log.LogLevel.Info;
                 case "debug": return Log.LogLevel.Debug;
                 case "trace": return Log.LogLevel.Trace;
-                default: return Log.LogLevel.Trace;
+                default: return Log.LogLevel.None;
             }
         }
     }

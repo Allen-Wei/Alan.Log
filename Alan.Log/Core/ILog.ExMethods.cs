@@ -68,7 +68,7 @@ namespace Alan.Log.Core
         /// <param name="position">输出位置</param>
         /// <param name="request">请求内容</param>
         /// <param name="response">输出内容</param>
-        public static ILog LogCritical(this ILog self, 
+        public static ILog Critical(this ILog self, 
             string message,
             string id = null,
             DateTime date = default(DateTime),
@@ -95,7 +95,7 @@ namespace Alan.Log.Core
         /// <param name="position">输出位置</param>
         /// <param name="request">请求内容</param>
         /// <param name="response">输出内容</param>
-        public static ILog LogError(this ILog self,
+        public static ILog Error(this ILog self,
             string message,
             string id = null,
             DateTime date = default(DateTime),
@@ -124,7 +124,7 @@ namespace Alan.Log.Core
         /// <param name="position">输出位置</param>
         /// <param name="request">请求内容</param>
         /// <param name="response">输出内容</param>
-        public static ILog LogWarning(this ILog self, 
+        public static ILog Warning(this ILog self, 
             string message,
             string id = null,
             DateTime date = default(DateTime),
@@ -152,7 +152,7 @@ namespace Alan.Log.Core
         /// <param name="position">输出位置</param>
         /// <param name="request">请求内容</param>
         /// <param name="response">输出内容</param>
-        public static ILog LogInfo(this ILog self,
+        public static ILog Info(this ILog self,
             string message,
             string id = null,
             DateTime date = default(DateTime),
@@ -181,7 +181,7 @@ namespace Alan.Log.Core
         /// <param name="position">输出位置</param>
         /// <param name="request">请求内容</param>
         /// <param name="response">输出内容</param>
-        public static ILog LogDebug(this ILog self,
+        public static ILog Debug(this ILog self,
             string message,
             string id = null,
             DateTime date = default(DateTime),
@@ -209,7 +209,7 @@ namespace Alan.Log.Core
         /// <param name="position">输出位置</param>
         /// <param name="request">请求内容</param>
         /// <param name="response">输出内容</param>
-        public static ILog LogTrace(this ILog self,
+        public static ILog Trace(this ILog self,
             string message,
             string id = null,
             DateTime date = default(DateTime),

@@ -8,6 +8,9 @@ using Alan.Log.Models.Ex;
 
 namespace Alan.Log.ILogImplement
 {
+    /// <summary>
+    /// 根据日期自动分割文件
+    /// </summary>
     public class LogAutoSeperateFilesByDate : ILog
     {
         private static object _lock = new object();
@@ -27,7 +30,11 @@ namespace Alan.Log.ILogImplement
         /// <summary>
         /// 序列化日志
         /// </summary>
-        private Func<Alan.Log.Models.Log, string> Generate { get; set; }
+        public Func<Alan.Log.Models.Log, string> Generate { get; set; }
+        /// <summary>
+        /// 在默认的生成日志内容方法里(Generate)是否将属性名写入
+        /// </summary>
+        public bool AppendPropertyNameInDefaultGenerate { get; set; }
 
         /// <summary>
         /// 实例化
@@ -37,20 +44,38 @@ namespace Alan.Log.ILogImplement
             this.Directory = Environment.CurrentDirectory;
             this.PrefixName = "LogAutoSeperateFilesByDate";
             this.ExtName = ".txt";
+            this.AppendPropertyNameInDefaultGenerate = true;
             this.Generate = l =>
             {
                 List<string> lines = new List<string>();
-                if (!String.IsNullOrWhiteSpace(l.Id)) lines.Add("Id: " + l.Id);
-                if (l.Date != default(DateTime)) lines.Add("Date: " + l.Date.ToString("yyyy-MM-dd HH:mm:ss"));
-                lines.Add("Level: " + l.Level);
-                if (!String.IsNullOrWhiteSpace(l.Logger)) lines.Add("Logger: " + l.Logger);
-                if (!String.IsNullOrWhiteSpace(l.Category)) lines.Add("Category: " + l.Category);
-                if (!String.IsNullOrWhiteSpace(l.Message)) lines.Add("Message: " + l.Message);
-                if (!String.IsNullOrWhiteSpace(l.Note)) lines.Add("Note: " + l.Note);
-                if (!String.IsNullOrWhiteSpace(l.Request)) lines.Add("Request: " + l.Request);
-                if (!String.IsNullOrWhiteSpace(l.Response)) lines.Add("Response: " + l.Response);
-                if (!String.IsNullOrWhiteSpace(l.Position)) lines.Add("Position: " + l.Position);
-                lines.Add(String.Join("=", Enumerable.Repeat("=", 10)));
+                if (this.AppendPropertyNameInDefaultGenerate)
+                {
+                    if (!String.IsNullOrWhiteSpace(l.Id)) lines.Add(String.Format("{0,-10}: {1}", "Id", l.Id));
+                    if (l.Date != default(DateTime)) lines.Add(String.Format("{0,-10}: {1}", "Date", l.Date.ToString("yyyy-MM-dd HH:mm:ss")));
+                    if (l.Level != Models.Log.LogLevel.None) lines.Add(String.Format("{0,-10}: {1}", "Level", l.Level));
+                    if (!String.IsNullOrWhiteSpace(l.Logger)) lines.Add(String.Format("{0,-10}: {1}", "Logger", l.Logger));
+                    if (!String.IsNullOrWhiteSpace(l.Category)) lines.Add(String.Format("{0,-10}: {1}", "Category", l.Category));
+                    if (!String.IsNullOrWhiteSpace(l.Message)) lines.Add(String.Format("{0,-10}: {1}", "Message", l.Message));
+                    if (!String.IsNullOrWhiteSpace(l.Note)) lines.Add(String.Format("{0,-10}: {1}", "Note", l.Note));
+                    if (!String.IsNullOrWhiteSpace(l.Request)) lines.Add(String.Format("{0,-10}: {1}", "Request", l.Request));
+                    if (!String.IsNullOrWhiteSpace(l.Response)) lines.Add(String.Format("{0,-10}: {1}", "Response", l.Response));
+                    if (!String.IsNullOrWhiteSpace(l.Position)) lines.Add(String.Format("{0,-10}: {1}", "Position", l.Position));
+                }
+                else
+                {
+                    if (!String.IsNullOrWhiteSpace(l.Id)) lines.Add(l.Id);
+                    if (l.Date != default(DateTime)) lines.Add(l.Date.ToString("yyyy-MM-dd HH:mm:ss"));
+                    if (l.Level != Models.Log.LogLevel.None) lines.Add(l.Level.ToString());
+                    if (!String.IsNullOrWhiteSpace(l.Logger)) lines.Add(l.Logger);
+                    if (!String.IsNullOrWhiteSpace(l.Category)) lines.Add(l.Category);
+                    if (!String.IsNullOrWhiteSpace(l.Message)) lines.Add(l.Message);
+                    if (!String.IsNullOrWhiteSpace(l.Note)) lines.Add(l.Note);
+                    if (!String.IsNullOrWhiteSpace(l.Request)) lines.Add(l.Request);
+                    if (!String.IsNullOrWhiteSpace(l.Response)) lines.Add(l.Response);
+                    if (!String.IsNullOrWhiteSpace(l.Position)) lines.Add(l.Position);
+                }
+
+
                 lines.Add(Environment.NewLine);
                 return String.Join(Environment.NewLine, lines);
             };
@@ -134,7 +159,7 @@ namespace Alan.Log.ILogImplement
             string position)
         {
 
-            var fileName = String.Format("{0}-{1}-{2}{3}", this.PrefixName, level, DateTime.Now.ToString("yyyyMMdd"), this.ExtName);
+            var fileName = String.Format("{0}-{1}-{2}{3}", this.PrefixName, level ?? "none", DateTime.Now.ToString("yyyyMMdd"), this.ExtName);
             var filePath = System.IO.Path.Combine(this.Directory, fileName);
 
             var logTxt = this.Generate(new Alan.Log.Models.Log
@@ -154,19 +179,9 @@ namespace Alan.Log.ILogImplement
 
             lock (_lock)
             {
+                if (!System.IO.Directory.Exists(this.Directory)) System.IO.Directory.CreateDirectory(this.Directory);
+
                 System.IO.File.AppendAllText(filePath, logTxt, Encoding.UTF8);
-                //if (!System.IO.File.Exists(filePath))
-                //{
-                //    using (var fs = System.IO.File.Create(filePath))
-                //    {
-                //        var txt = Encoding.UTF8.GetBytes(logTxt);
-                //        fs.Write(txt, 0, txt.Length);
-                //        fs.Close();
-                //    }
-                //}
-                //else
-                //{
-                //}
             }
         }
     }
